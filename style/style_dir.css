@@ -1,0 +1,142 @@
+/* hard disk media styles */
+
+/* start orig. styles from index.php */
+
+body{
+	font-family: "Lucida Grande",Calibri,Arial;
+	font-size: 9pt;
+	color: #333;
+	background: #f8f8f8;
+}
+
+a{
+	color: #b00;
+	font-size: 11pt;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover{
+	color: #000;
+}
+
+img{
+	vertical-align: bottom;
+	padding: 0 3px 0 0;
+}
+
+table{
+	position:absolute;
+	top:10px;
+	left:0;
+	margin: 0px 300px;
+	padding: 0;
+	width: 600px;
+}
+
+table td{
+	padding: 5px;
+}
+
+thead td{
+	padding-left: 0;
+	font-family: "Trebuchet MS";
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+tbody .folder td{
+	border: solid 1px #f8f8f8;
+}
+
+tbody .file td{
+	background: #fff;
+	border: solid 1px #ddd;
+}
+
+tbody tr.file td.name a {
+	color:black !important;
+	font-size:12px;
+}
+
+tbody tr.file td.name {
+	float:left;
+	width:400px;
+	overflow:hidden;
+}
+
+tbody .file td.size,
+
+tbody .file td.time{
+	white-space: nowrap;
+	width: 1%;
+	padding: 5px 10px;
+}
+
+tbody .file td.size span{
+	color: #999;
+	font-size: 8pt;
+}
+
+tbody .file td.time{
+	color: #555;
+}
+
+tfoot td{
+	padding: 5px 0;
+	color: #777;
+	font-size: 8pt;
+	background: #f8f8f8;
+	border-color: #f8f8f8;
+}
+
+tfoot td.copy{
+	text-align: right;
+	white-space: nowrap;
+}
+
+tfoot td.cc{
+	padding: 40px;
+	text-align: center;
+}
+
+tfoot td.cc img{
+	padding: 0;
+	border: none;
+}
+
+/* end orig. styles from index.php */
+
+li {
+	top:0;
+	left:0;
+	margin-top:10px;
+}
+
+ul {
+	top:0;
+	left:0;
+	width:200px;
+}
+
+#container1 {
+	width:660px;
+}
+
+#title {
+	clear:both;
+	float:left;
+}
+
+#left {
+	position:fixed;
+	top:0;
+	left:20px;
+	margin:0px;
+	padding:0px;
+}
+
+#right {
+	margin:0px;
+	padding:0px;
+}

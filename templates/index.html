@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Media Streaming Archive</title>
+
+<link rel="stylesheet" href="###main_style###" />
+
+<script src="###js_dir######jquery###"></script>
+<script src="###js_dir###custom.js"></script>
+<script type="text/javascript">
+function popitup(url) {
+	newwindow=window.open(url,'name','height=###height###,width=###width###');
+	if (window.focus) { newwindow.focus() }
+	return false;
+}
+</script>
+
+</head>
+
+<body>
+
+<!-- menu start -->
+<div id="left">
+<h2>Media Streaming Menu</h2>
+<ul>
+	<li><a href="index.php?dir=/">Home Directory</a></li>
+	<li><a href="javascript:history.back();">Go Back!</a></li>
+	<li><a href="#"  onclick="javascript:ajax_stopstream('avconv','avconv');">kill all encodes</a></li>
+</ul>
+</div>
+<!-- menu end -->
+
+<!-- main start -->
+<div id="right">
+<table cellpadding="0" cellspacing="1">
+	<thead>
+		<tr>
+			<td colspan="3">Directory listing for ###folder###</td>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="2" class="copy"><a target="_blank" href="http://greg-j.com/phpdl/">PHPDL</a> created by <a target="_blank" href="http://greg-j.com">Greg Johnson</a> modifyed by <a href="#" target="_blank">nevermind</a>.</td>
+		</tr>
+		<tr>
+			<td colspan="3" class="cc"><a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img src="http://creativecommons.org/images/public/somerights20.png" alt="CC 3.0" /></a></td>
+		</tr>
+	</tfoot>
+	<tbody>
+<!-- folders -->
+	###list_folders###
+<!-- /folders -->
+<!-- files -->
+	###list_files###
+<!-- /files -->
+	</tbody>
+</table>
+</div>
+<!-- main end -->
+
+</body>
+</html>
