@@ -1,5 +1,5 @@
-!!!THIS IS A BETA HACKED TOGETHER TO FIT MY NEEDS!!!
-!!!YOURS MIGHT DIFFER!!!
+== Web Video Streamer ==
+
 
 what it does:
 
