@@ -5,7 +5,10 @@ include_once("../functions/functs.php");
 include_once("../config.php");
 
 $file=escapeshellcmd($_GET['file']);
-$name=escapeshellcmd($_GET['name']);
+$name=escapeshellcmd(md5($_SERVER['REMOTE_ADDR'].$_GET['name']));
 
-passthru("kill -9 $(ps aux | grep '".$name."' |awk '{print $2}') |sudo /etc/init.d/crtmpserver restart",$returnval);
+//echo $name;
+//die();
+
+passthru("kill -9 $(ps aux | grep '".$name."' |awk '{print $2}')",$returnval);
 ?>

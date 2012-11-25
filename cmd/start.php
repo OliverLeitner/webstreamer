@@ -10,7 +10,7 @@ include_once("../config.php");
 $file=$_GET['file'];
 $name=$_GET['name'];
 
-$init="sudo /etc/init.d/crtmpserver restart &&";
+//$init="sudo /etc/init.d/crtmpserver restart &&";
 //$init="sudo sed -i '/Stream available/ d' /var/log/crtmpserver/main.log &&";
 
 $source="avconv -re -i '{$file}'";
