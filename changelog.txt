@@ -26,3 +26,8 @@ removed autoPlay functionality from all players, need to click on play to have i
 0.2b
 
 added multiuser support for rtmp streaming
+
+0.3
+
+removed need for root privileges
+fixed some bugs with multiplayer

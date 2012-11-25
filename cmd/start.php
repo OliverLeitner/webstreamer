@@ -10,9 +10,6 @@ include_once("../config.php");
 $file=$_GET['file'];
 $name=$_GET['name'];
 
-//$init="sudo /etc/init.d/crtmpserver restart &&";
-//$init="sudo sed -i '/Stream available/ d' /var/log/crtmpserver/main.log &&";
-
 $source="avconv -re -i '{$file}'";
 $target="tcp://127.0.0.1:6666?pkt_size=1613";
 

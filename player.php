@@ -7,24 +7,20 @@ include_once("config.php");
 $name = ltrim($_GET['name'],"/");
 $type = $_GET['type'];
 $title = $_GET['name'];
+$file = $_GET['file'];
 //for multiuser support we use client ip and chosen file
 $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
 //commandline testing if we got our rtmp stream running or not
-//$cmd = "grep -r 'Stream available' /var/log/crtmpserver/main.log | awk -F':+| +' '{print $10}'";
-$cmd = "grep -r 'Client connected' {$crtmpserverlog} |gawk '{print $2}'";
+$cmd = "ps auxf |grep {$uid} |awk '{ print $13 }' |grep avconv";
 $name_cmd = exec($cmd);
-$name_cmd = trim($name_cmd,":");
 
 //check if we are streaming or not streaming...
-if($name_cmd != "connected"){
+if($name_cmd == ""){
 	$name_cmd = $name;
 } else {
 	$name_cmd = $uid;
 }
-
-//echo $name_cmd;
-//die();
 
 /* global vars possible to set... */
 $tag = "<div id=\"css-poster\" data-ratio=\"1.0\" class=\"flowplayer minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live/\">
@@ -169,8 +165,8 @@ if($player == "projekktor"){
     	seamlesstabbing: 'false',
     	autoplay: 'false',
     	controls: 'true',
-		height: '".$height."',
-		width: '".$width."',
+	height: '".$height."',
+	width: '".$width."',
     	//poster: 'images/flash_thumb.jpg',
     	//cover: 'images/flash_thumb.jpg',
     	file: '".$name_cmd."',
