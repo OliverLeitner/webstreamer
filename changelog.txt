@@ -1,0 +1,28 @@
+0.1
+
+initial release
+
+0.2
+
+added flowplayer support, html5 and flash
+added projekktor support
+added support for pseudo rtmp playback (just dont click start, directly click on the file link)
+config.php added options and general cleanup
+splitted templates from functions
+cleanup of unused code
+added comments to make the program more self-explanatory
+replaced the transitional xml output with html5 complaint output
+replaced ffmpeg with avconv for better realtime streaming
+changed stream from mpegts to flv, for easier and faster general playback
+changed default player to flowplayer_flash
+removed need for libx264
+
+0.2a
+
+fixed some leftover static stylings
+fixed missing css link in popup
+removed autoPlay functionality from all players, need to click on play to have it start
+
+0.2b
+
+added multiuser support for rtmp streaming
