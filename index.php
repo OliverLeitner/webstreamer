@@ -24,7 +24,7 @@ include_once("functions/definitions.php"); //base definitions for images and fil
  *	exist. Let's just make sure you're not reporting notices.
  */
 
-/*	changes by: Oliver Leitner
+/*	changes by: nevermind
 */
 
 /**********************************************************************************************************************************/
