@@ -23,6 +23,8 @@ to the outside world and forward them to the box running the rtmp server.
 you will need to setup a second virtualhost directive on your server that links to your media directory on a port
 of your choice, change the config.php according to your needs afterwards, if you want to use pseudo rtmp streaming
 outside of your lan, be aware that it will need alot more bandwith than with real rtmp.
+5. Make sure, that you have the right to run the exec(); command (usually you find out which commands you are
+forbidden to use by looking in your php.ini for the line "disable_functions")
 
 usage:
 
