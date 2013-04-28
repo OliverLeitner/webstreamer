@@ -3,7 +3,6 @@ include_once("functions/functs.php"); //general functions
 include_once("templates/index.php"); //output templating
 include_once("config.php"); //basic configurations
 include_once("functions/definitions.php"); //base definitions for images and files
-
 ####################################################################################################################################
 ####################################[[[ SCROLL TO BOTTOM OF THIS FILE TO CHANGE THE TEMPLATE ]]]####################################
 ####################################################################################################################################
@@ -116,7 +115,6 @@ if($file_list && $folder_list)
 //******************************** output definitions *************************************************************
 if($folder_list) {
 	foreach($folder_list as $item) {
-		//if we have items, we show up
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
 			$listfolders .= '<tr class="folder">

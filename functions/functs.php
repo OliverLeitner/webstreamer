@@ -80,24 +80,19 @@ function time_ago($timestamp, $recursive = 0)
 	return $text;
 }
 
-function dirEmpty($dirname,$allowed=array("avi")){
-	//check if dir is empty
-	$files = array_diff(scandir($dirname), array("..","."));
+function dirEmpty($dirname,$allowed){
 	$has_allowed = FALSE;
-	//print_r($files);
-	foreach($files AS $key => $value){
-		//print_r($value);
-			$ending = end(explode(".",$value));
-			if(!is_dir($value) || in_array($ending,$allowed["video"])){
-				$has_allowed = TRUE;
-			}
+	$findtype = "";
+	$excludedirs = '-not -path "*svn*|*etc*|*root*|*lost+found*|*boot*"';
+	foreach($allowed["video"] AS $key => $ending){
+		$findtype .= "-name \*.".$ending." -o ";
 	}
 	
-	if($has_allowed === TRUE){
-		$return = TRUE;
-	} else {
-		$return = FALSE;
+	$findtype = rtrim($findtype," -o ");
+	$result = exec("find '".$dirname."' -not -path ".$excludedirs." -type f ".$findtype);
+	if($result != ""){
+		$has_allowed = TRUE;
 	}
-	return $return;
+	return $has_allowed;
 }
 ?>
