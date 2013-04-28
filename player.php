@@ -4,10 +4,10 @@ include_once("templates/player.php");
 include_once("config.php");
 
 //grab the full filepath...
-$name = ltrim($_GET['name'],"/");
+$name = addslashes(ltrim(urldecode($_GET['name']),"/"));
 $type = $_GET['type'];
-$title = $_GET['name'];
-$file = $_GET['file'];
+$title = urldecode($_GET['name']);
+$file = addslashes(urldecode($_GET['file']));
 //for multiuser support we use client ip and chosen file
 $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
@@ -32,7 +32,7 @@ if($player == "flowplayer_flash"){
 
 	$style = "";
 
-	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer-3.2.11.min.js\"></script>";
+	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>";
 
 	if($name_cmd == $uid){
 		$contentscript = "
@@ -64,7 +64,7 @@ if($player == "flowplayer_flash"){
         	}
 		},
 		clip: {
-        	provider: 'pseudo',
+        		provider: 'pseudo',
 			url: '".$name_cmd."',
 			baseUrl: 'http://".$storageserver.":".$storageport."/',
 			autoPlay: false,
@@ -107,6 +107,8 @@ if($player == "flowplayer_html5"){
 			flowplayer.conf.swf = '".$js_dir."flowplayer/flowplayer.swf';
 		}
 	</script>";
+
+	$contentscript = "";
 }
 
 /* jwplayer and default defintions	*/
@@ -128,11 +130,11 @@ if($player == "jwplayer" || !isset($player)){
         provider:'rtmp',
         allowscriptaccess:'always',
         file:'".$name_cmd."',
-        autostart:'true',
+        autostart:'false',
         'rtmp.subscribe':'false',
         'modes': [
                 {type: 'html5'},
-                {type: 'flash', src: '".$js_dir."jwplayer/player.swf'},
+                {type: 'flash', src: '".$js_dir."jwplayer/jwplayer.flash.swf'},
                 {type: 'download'}
         ]
 	};

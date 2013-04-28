@@ -79,4 +79,23 @@ function time_ago($timestamp, $recursive = 0)
 	}
 	return $text;
 }
+
+function dirEmpty($dirname,$allowed=array("avi")){
+	//check if dir is empty
+	$files = array_diff(scandir($dirname), array("..","."));
+	$has_allowed = FALSE;
+	foreach($files AS $key => $value){
+			$ending = end(explode(".",$value));
+			if(in_array($ending,$allowed["video"])){
+				$has_allowed = TRUE;
+			}
+	}
+	
+	if(is_array($files) && $has_allowed === TRUE){
+		$return = TRUE;
+	} else {
+		$return = FALSE;
+	}
+	return $return;
+}
 ?>

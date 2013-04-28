@@ -30,6 +30,8 @@ include_once("functions/definitions.php"); //base definitions for images and fil
 /**********************************************************************************************************************************/
 /************************************************************************************************************[ DIRECTORY LOGIC ]***/
 // Get this folder and files name.
+ini_set("display_errors","Off");
+
 $this_script = basename(__FILE__);
 //$this_folder = str_replace('/'.$this_script, '', $_SERVER['SCRIPT_NAME']);
 $this_folder = $_GET['dir'];
@@ -114,10 +116,13 @@ if($file_list && $folder_list)
 //******************************** output definitions *************************************************************
 if($folder_list) {
 	foreach($folder_list as $item) {
-		//print_r($item);
-		$listfolders .= '<tr class="folder">
-			<td colspan="3" class="name"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="?dir='.$item['dir'].$item['name'].'/">'.$item['name'].'</a></td>
-		</tr>';
+		//if we have items, we show up
+		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
+		if($has_files == TRUE){
+			$listfolders .= '<tr class="folder">
+				<td colspan="3" class="name"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="?dir='.$item['dir'].$item['name'].'/">'.$item['name'].'</a></td>
+			</tr>';
+		}
 	}
 }
 
@@ -125,7 +130,7 @@ if($folder_list) {
 if($file_list){
 	foreach($file_list as $item) {
 		$listfiles .= '<tr class="file">
-			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.$item['name'].'" onclick="popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'\')">'.$item['name'].'.'.$item['ext'].'</a></td>
+			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="popitup(\'player.php?name='.urlencode($item['dir']).urlencode($item['name']).'.'.$item['ext'].'&amp;file='.urlencode($item['name']).'.'.$item['ext'].'&amp;type='.$item['type'].'\')">'.$item['name'].'.'.$item['ext'].'</a></td>
 			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_startstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
 			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_stopstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
 			<td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td>

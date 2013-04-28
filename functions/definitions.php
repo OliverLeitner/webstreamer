@@ -5,6 +5,16 @@ $sort = array(
 	array('key'=>'size',	'sort'=>'asc') // ... for items with the same initial sort value, sort this way.
 );
 
+$filetype = array(
+	'text'		=> array('doc', 'docx', 'txt', 'rtf', 'odf', 'text', 'nfo'),
+	'audio'		=> array('aac', 'mp3', 'wav', 'wma', 'm4p', 'ogg'),
+	'graphic'	=> array('ai', 'bmp', 'eps', 'gif', 'ico', 'jpg', 'jpeg', 'png', 'psd', 'psp', 'raw', 'tga', 'tif', 'tiff'),
+	'video'		=> array('mv4', 'bup', 'mkv', 'ifo', 'flv', 'vob', '3g2', 'bik', 'xvid', 'divx', 'wmv', 'avi', '3gp', 'mp4', 'mov', '3gpp', '3gp2', 'swf', 'm4v', 'ogm', 'mpg', 'mpeg'),
+	'archive'	=> array('7z', 'dmg', 'rar', 'sit', 'zip', 'bzip', 'gz', 'tar'),
+	'app'		=> array('exe', 'msi', 'mse', 'bat'),
+	'script'	=> array('js', 'html', 'htm', 'xhtml', 'jsp', 'asp', 'aspx', 'php', 'xml', 'css')
+);
+
 //list of mime types.
 $typesArray = array('avi'=>'video/x-msvideo','mpg'=>'video/mpeg','mp4'=>'video/mp4','m4v'=>'video/mp4','mkv'=>'video/x-matroska',
 	'ogm'=>'video/ogg','wmv'=>'video/x-ms-wmv','flv'=>'video/x-flv');
@@ -16,16 +26,6 @@ if(isset($_GET['image']))
 {
 	// Accomidate uppercase & lowercase file extensions
 	$image = strtolower($_GET['image']);
-	// Set filetypes (most of this list is from http://www.filezed.com)
-	$filetype = array(
-		'text'		=> array('doc', 'docx', 'txt', 'rtf', 'odf', 'text', 'nfo'),
-		'audio'		=> array('aac', 'mp3', 'wav', 'wma', 'm4p', 'ogg'),
-		'graphic'	=> array('ai', 'bmp', 'eps', 'gif', 'ico', 'jpg', 'jpeg', 'png', 'psd', 'psp', 'raw', 'tga', 'tif', 'tiff'),
-		'video'		=> array('mv4', 'bup', 'mkv', 'ifo', 'flv', 'vob', '3g2', 'bik', 'xvid', 'divx', 'wmv', 'avi', '3gp', 'mp4', 'mov', '3gpp', '3gp2', 'swf', 'm4v', 'ogm', 'mpg', 'mpeg'),
-		'archive'	=> array('7z', 'dmg', 'rar', 'sit', 'zip', 'bzip', 'gz', 'tar'),
-		'app'		=> array('exe', 'msi', 'mse', 'bat'),
-		'script'	=> array('js', 'html', 'htm', 'xhtml', 'jsp', 'asp', 'aspx', 'php', 'xml', 'css')
-	);
 
 	// Set the mimetype and cache the image for a year
 	header("Content-type: image/png");
