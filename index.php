@@ -35,8 +35,10 @@ $this_script = basename(__FILE__);
 //$this_folder = str_replace('/'.$this_script, '', $_SERVER['SCRIPT_NAME']);
 $this_folder = $_GET['dir'];
 
+//always root to / if no param given
 if(!isset($_GET['dir'])){
 	$_GET['dir'] = $this_script."?dir=/";
+	header("Location: ".$this_script."?dir=/");
 }
 
 // Declare vars used beyond this point.

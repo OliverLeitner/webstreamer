@@ -89,8 +89,12 @@ function dirEmpty($dirname,$allowed){
 	}
 	
 	$findtype = rtrim($findtype," -o ");
-	$result = exec("find '".$dirname."' -not -path ".$excludedirs." -type f ".$findtype);
-	if($result != ""){
+	
+	//we dont run this if were on top of em all...
+	if($_GET["dir"] != "/")
+		$result = exec("find '".$dirname."' -not -path ".$excludedirs." -type f ".$findtype);
+
+	if($result != "" || $_GET["dir"] == "/"){
 		$has_allowed = TRUE;
 	}
 	return $has_allowed;
