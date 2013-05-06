@@ -1,0 +1,4 @@
+this is the directory where thumbnail
+png files are being generated when a
+directory is being displayed for the first
+time.

@@ -1,0 +1,2 @@
+this is the directory where meta info text files
+are being placed when dirlist is created the first time.
