@@ -31,3 +31,11 @@ added multiuser support for rtmp streaming
 
 removed need for root privileges
 fixed some bugs with multiplayer
+
+1.0 (first major version)
+
+added thumbnail generation
+added metadata support
+updated all players to the latest version
+switch for flowplayer is now flowplayer, does not need further differentiation between html5 and flash
+solid handling of directories (nothing disappearing, nothing showing up as dir thats a file...)
