@@ -32,7 +32,6 @@ include_once("functions/definitions.php"); //base definitions for images and fil
 ini_set("display_errors","Off");
 
 $this_script = basename(__FILE__);
-//$this_folder = str_replace('/'.$this_script, '', $_SERVER['SCRIPT_NAME']);
 $this_folder = $_GET['dir'];
 
 //always root to / if no param given
@@ -43,7 +42,6 @@ if(!isset($_GET['dir'])){
 
 // Declare vars used beyond this point.
 $file_list = array();
-//$folder_list = array();
 $folder_list = array();
 $total_size = 0;
 
@@ -61,7 +59,13 @@ if ($handle = opendir($this_folder))
 			$info				=	pathinfo($_GET['dir'].$file);
 			// Organize file info.
 			$item['dir']		=	$_GET['dir'];
-			$item['name']		=	$info['filename'];
+
+			if(is_file($_GET['dir'].$file)){
+				$item['name']		=	$info['filename'];
+			} else {
+                                $item['name']           =       $info['basename'];
+			}
+
 			$item['lname']		=	strtolower($info['filename']);
 			$item['ext']		=	$info['extension'];
 				if($info['extension'] == '') $item['ext'] = '.';
@@ -73,7 +77,7 @@ if ($handle = opendir($this_folder))
 			$item['type']		=	$typesArray[$item['ext']];
 
 			// Add files to the file list...
-			if($info['extension'] != '')
+			if(is_file($item['dir'].$item['name'].".".$item['ext']))
 			{
 				//filter out all files we do not want to show...
 				if(in_array($info['extension'],$include_files))
@@ -120,7 +124,7 @@ if($folder_list) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
 			$listfolders .= '<tr class="folder">
-				<td colspan="3" class="name"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="?dir='.$item['dir'].$item['name'].'/">'.$item['name'].'</a></td>
+				<td colspan="3" class="name"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/">'.$item['name'].'</a></td>
 			</tr>';
 		}
 	}
@@ -129,8 +133,25 @@ if($folder_list) {
 
 if($file_list){
 	foreach($file_list as $item) {
+		//creating thumbnail for the player on player load
+		$filename = preg_replace("/ /","_",$item['name'].".".$item['ext']);
+		$dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
+		$cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".$item['dir'].$item['name'].".".$item['ext']."' -r 16 -qscale 1 -s 320x240 -f image2 '".$thumbs_dir.$filename."_thumb.png'";
+		$out_duration_cmd = "avconv -i '".$item['dir'].$item['name'].".".$item['ext']."' 2>&1 | grep Duration > '".$meta_dir.$filename.".txt'";
+		if(!file_exists($thumbs_dir.$filename."_thumb.png")){
+        		exec($cmd_thumb);
+			compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+			gzcompress($thumbs_dir.$filename."_thumb.png");
+		}
+		if(!file_exists($meta_dir.$filename.".txt")){
+			exec($out_duration_cmd);
+		}
+		$out_duration = exec("cat ".$meta_dir.$filename.".txt");
+		$out_duration = str_replace(",","<br />",$out_duration);
+		$popup_link = 'popitup(\'player.php?name='.urlencode($item['dir']).urlencode($item['name']).'.'.$item['ext'].'&amp;file='.urlencode($item['name']).'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
 		$listfiles .= '<tr class="file">
-			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="popitup(\'player.php?name='.urlencode($item['dir']).urlencode($item['name']).'.'.$item['ext'].'&amp;file='.urlencode($item['name']).'.'.$item['ext'].'&amp;type='.$item['type'].'\')">'.$item['name'].'.'.$item['ext'].'</a></td>
+			<td class="thumb"><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img src="'.$thumbs_dir.$filename.'_thumb.png" width="200" border="0" /></a></td>
+			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
 			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_startstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
 			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_stopstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
 			<td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td>

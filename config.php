@@ -1,39 +1,41 @@
 <?php
 /* some config settings for our system */
-
 //where are our javascripts placed...
 $js_dir = "scripts/";
 
-//swfobject 2.x local or google based?
-$swfobject = "swfobject/swfobject.js";
-
 //the query install
-$jquery = "jquery-1.8.3.min.js";
+$jquery = "jquery-2.0.0.min.js";
 
 //main style
 $style_main = "style/style_dir.css";
+
+//thumbnail directory
+$thumbs_dir = "thumbs/";
+
+//metadata storage
+$meta_dir = "meta/";
 
 /*
 set the player for streaming we want to use
 options:
 	jwplayer (WORKING!)
 	projekktor (BROKEN!, only pseudo rtmp from files)
-	flowplayer_flash (WORKING!, default cause GPL)
-	flowplayer_html5 (BROKEN!, only pseudo rtmp from files)
+	flowplayer (WORKING!)
 
 beware: pseudo playback almost always only support flv,m4v,mp4
 it also doesnt work with slow bandwith connections (LAN only, if no fast server avail.)
+if youre using an iPad, iPhone, Android, only the pseudo streaming options might work...
 */
-$player = "flowplayer_flash";
+$player = "jwplayer";
 
 //jwplayer registration key for stats...
 //leave blank if you dont have one...
 $jw_key = "";
 
 //vid settings
-$height = "540";
-$width = "660";
-$buffer = "500";
+$height = "480";
+$width = "680";
+$buffer = "250";
 
 //just show rootdirs in this array...
 $include_dirs = array("directory1","directory2","directory3");

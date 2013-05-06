@@ -56,13 +56,20 @@ tbody .file td{
 
 tbody tr.file td.name a {
 	color:black !important;
-	font-size:12px;
+	font-size:16pt;
 }
 
 tbody tr.file td.name {
 	float:left;
 	width:400px;
 	overflow:hidden;
+	height:150px;
+	font-size:14pt;
+}
+
+tbody tr.file td.name img {
+	display:none;
+	visibility:hidden;
 }
 
 tbody .file td.size,

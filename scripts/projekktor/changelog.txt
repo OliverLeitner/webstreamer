@@ -1,6 +1,257 @@
 PROJEKKTOR - simply mighty <video>
 http://www.projekktor.com
 
+V1.2.24
+=======
+
+  fixes:
+  * [core] fixed poster quality toggling on "unbalanced" playlists where one or more format(s) provide more quality alternatives than the selected one.
+
+
+
+V1.2.23
+=======
+
+  additions:
+  * [core] it´s now possible to set up different poster images for each quality-setting (in analogy to media source quality arrays)
+
+  fixes:
+  * [plugin:controlbar] proper view reset on .setStop()
+  
+  
+
+V1.2.22
+=======
+
+  additions:
+  * [plugin:display] mouse cursor now automatically turns "pointer" on IDLE state
+  
+  fixes:
+  * [core] fixed "autoplay" behavior on .reset() and .setFile()
+  * [plugin:controlbar] volume controls are now properly set "inactive" on mobile devices
+  * [plugin:display] mouse cursor now properly turns "none" after timeout in case click invoced play but mouse hasn´t moved afterwards
+
+
+
+V1.2.21
+=======
+
+  additions:
+  * [core] new API method ".setGotoCuePoint
+  * [core] the player container now gets an additional class matching the player´s state
+  * [plugin:controlbar] added scrubber-position tooltip
+  * [plugin:controlbar] its now possible to have vertical volume sliders wihout further hacking
+  
+  changes:
+  * [plugin:controlbar] volume of zero is no longer stored in cookie to avoid silent players accross sessions
+
+  fixes:
+  * [core] fixed event unbinding for plugin objects on .reset()
+  
+
+
+V1.2.20
+=======
+
+  additions:
+  * [core] new API method ".getFrame()"
+  * [core] new API method ".setFrame()"
+  * [core] new config parameter "thereCanBeOnlyOne", default "true"
+  * [core] on pages with multiple player instances, players with "thereCanBeOnlyOne" set to "true" will auto-stop all other players once they change to none IDLE state
+  * [core] .addListener() & .removeListener() now support namespaces
+  
+  changes:
+  * [core] improved seek accuracy for native video
+  * [core] .removePlugin() is now .removePlugins() as it always accepted an array of plugins only
+  
+  fixes:
+  * [core] fixed poster rescaling
+  * [core] performance tweeks
+  
+
+
+V1.2.19
+=======
+
+  fixes:
+  * [core] streamType "httpAudio" is now properly recognized by the native playback model
+  * [core] fixed a very annoying fullscreen issue
+
+  
+  
+V1.2.18
+=======
+
+  fixes:
+  * [core] credentials are now always enabled on AJAX calls
+  * [core] if player toggles DONE after being in fullscreen mode player containers with unset dimensions do not disappear any longer
+  * [core] injecting new items to non IDLE players doesn´t force IDLE any longer
+  * [core] fixed plugin version check routine
+  * [plugin:display] clicking on testcards now works properly on items with "disallowSkip" set true
+  * [plugin:contextmenu] proper iframe breaking on URL clicks where applicable.
+  
+  changes:
+  * [core] CSS transitions are now disabled on mobile devices (performance issues)
+
+
+V1.2.17
+=======
+
+  fixes:
+  * [core] .setVolume() properly discards invalid values
+  * [plugin:controlbar] click target for quality-button fixed
+
+
+V1.2.16
+=======
+
+  fixes:
+  * [core] DOM elements applied by plugins are now properly unbound
+  * [core] .reset() did not unbind projekktor related events from document.window
+  * [plugin:display] startbutton and buffer-indicator now unregister properly on .reset() or .destroy()
+  
+  changes:
+  * [core] config option "controls" is now TRUE by default
+  
+
+V1.2.15
+=======
+
+  fixes:
+  * [core] fixed logic issue in plugin interface
+  * [core] fixed continuous playback issues on mobile devices
+  * [plugin:display] startbutton and buffer-indicator now unregister properly on .reset() or .destroy()
+
+
+
+V1.2.14
+=======
+  
+  additions:
+  * [core] compatibility-check for plugins via verion numbers
+  
+  fixes:
+  * [core] some JWPlayer-model issues fixed
+  * [core] issue with inter-plugin-communication fixed
+  * [core] minor performance issues fixed
+  * [core] using native audio shifted poster image down by one pixel
+  * [theme] IE7 issues fixed
+
+V1.2.13
+=======
+  
+  additions:
+  * [core] mounted <source>-tags can now be filled with addition "data-quality"-attributes
+  
+
+V1.2.12
+=======
+
+  additions:
+  * [theme] Added quality toggle button.
+  
+  fixes:
+  * [plugin:controlbar] fixed quality toggle logic mess
+  * [flash component] fixed minor image scaling issues
+  
+
+V1.2.11
+=======
+
+  fixes:
+  * [core] Fixed a plugin-interface-bug causing to mess up acitvation/de-activation of applied DOM containers
+
+
+V1.2.10
+=======
+
+  fixes:
+  * [core] Fixed general volume-handling issues in IE7-9
+  
+
+V1.2.09
+=======
+
+  fixes:
+  * [core] D´oh, stupid bug caused player to crash instantly in IE.
+
+
+V1.2.08
+=======
+
+  fixes:
+  * [core] dynamic css-classes are now properly set and reset - thanks again to "bhweb"
+  * [core] paused players now update time after seeking
+  * [plugin:controlbar] controls are now properly set "inactive" on mouse-over and player fires "done"
+
+
+V1.2.07
+=======
+  
+  additions:
+  * [core] new API method "getSource". Returns the exact video URL of the active media about to be played or playing
+  * [core] new API method "getPlatform". Returns the platform/environment the active media, e.g. "native", "flash", "ios", "vlc" ...
+  * [core] new item config-option "cat" - free text for categorizing video items. use at will.
+  
+  fixes:
+  * [core] prevent key event promotion for "playpause" via <space>-key in order to avoid scrolling
+  * [core] "fullscreen" event is now properly propagated over playlisted items
+  * [core] player collapsed on "completed" ... thx to bhweb for pointing this one out
+  * [core] "full viewport" now also works for IE7 when player is wrapped by a container with "position" CSS-directive ("hasLayout bug")
+  * [plugin:controlbar] muting IDLE players now works properly
+  * [plugin:controlbar] volume is now properly restored from in a cookie
+  
+  changes:
+  * [core] configured "keys"-callbacks now also recieve the original event as second argument
+  * [core] removed hard-coded "max-width: 100%;" from playercontainer
+
+
+V1.2.06
+=======
+
+ fixes:
+ * [core] prevent IE7 under some conditions to crash on return from fullscreen
+ * [plugin:controlbar] fixed "showOnIdle" behavior
+ 
+
+V1.2.05
+=======
+
+ additions:
+ * [plugin:display] mouse cursor now hides after 3 seconds of mouseover.
+ 
+ fixes:
+ * [core] fixed HLS playback issues on iDevices
+ * [core] fixed misinterpreted "steamType" parameter
+ 
+ changes:
+ * [plugin:controlbar] removed all hardcoded animations from script. use CSS transitions instead.
+
+
+V1.2.04
+=======
+
+ fixes:
+ * [core] minor config-issue fixed
+
+
+V1.2.03
+=======
+
+  fixes:
+  * [core] general minor plugin interface issues fixed.
+  
+
+V1.2.02
+=======
+
+  fixes:
+  * [core] Fixes "return to IDLE state" issues
+  * [core] Fixed non starting video on FF for Android
+  * [core] config parametes are now properly set in case of "false" or "null" values.
+  * [plugin:controlbar] if no quality setup exists existing quality-toggle-buttons are now properly turned inactive
+
+
 V1.2.01
 =======
 
@@ -21,7 +272,7 @@ V1.2.00
   * [core] new player event: "blur" - triggered once player looses focus
   * [core] new player event: "focus" - triggered once player receives focus
   * [core] new config option "forceFullViewport" to bypass native _media_ fullscreen on iPad and similar
-  * [core] new config option "keys" for keyboard-control customiozation
+  * [core] new config option "keys" for keyboard-control customization
 
   fixes:
   * [core] fixed random seek capabilities where available

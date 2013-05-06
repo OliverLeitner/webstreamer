@@ -1,7 +1,11 @@
 <?php
+ini_set("display_errors","On");
 include_once("functions/functs.php");
 include_once("templates/player.php");
 include_once("config.php");
+
+//define jquery full path
+$jq_dir = $js_dir.$jquery;
 
 //grab the full filepath...
 $name = addslashes(ltrim(urldecode($_GET['name']),"/"));
@@ -15,6 +19,16 @@ $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 $cmd = "ps auxf |grep {$uid} |awk '{ print $13 }' |grep avconv";
 $name_cmd = exec($cmd);
 
+//creating thumbnail for the player on player load
+$filename = preg_replace("/ /","_",$_GET["file"]);
+$dirname = dirname("/".$name);
+$cmd_thumb = "avconv -ss 00:3:00 -t 1 -i '/".$name."' -r 16 -qscale 1 -s 320x240 -f image2 '".$thumbs_dir.$filename."_thumb.png'";
+if(!file_exists($thumbs_dir.$filename."_thumb.png")){
+	exec($cmd_thumb);
+	compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+	gzcompress($thumbs_dir.$filename."_thumb.png");
+}
+
 //check if we are streaming or not streaming...
 if($name_cmd == ""){
 	$name_cmd = $name;
@@ -23,73 +37,23 @@ if($name_cmd == ""){
 }
 
 /* global vars possible to set... */
-$tag = "<div id=\"css-poster\" data-ratio=\"1.0\" class=\"flowplayer minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live/\">
-<video id=\"container1\" class=\"projekktor\" poster=\"flash_thumb.jpg\" title=\"".$title."\" controls>";
+$tag = "<div id=\"css-poster\" data-ratio=\"1.0\" class=\"flowplayer minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live\">
+<video id=\"container1\" class=\"projekktor\" width=\"".$width."\" height=\"".$height."\" 
+poster=\"".$thumbs_dir.$filename."_thumb.png\" 
+title=\"".$title."\" controls>";
 
-/*	flowplayer_flash definitions 	*/
-if($player == "flowplayer_flash"){
-	$tag = "<div id=\"container1\" style=\"display:block;width:".$width."px;height:".$height."px;\">";
-
-	$style = "";
-
-	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>";
-
-	if($name_cmd == $uid){
-		$contentscript = "
-		<script language=\"JavaScript\">
-		flowplayer('container1', '".$js_dir."flowplayer/flowplayer-3.2.15.swf', {
-		plugins: {
-        	rtmp: {
-            	url: '".$js_dir."flowplayer/flowplayer.rtmp-3.2.11.swf',
-            	netConnectionUrl: 'rtmp://".$crtmpserver."/live',
-            	failOverDelay: 1000
-        	}
-		},
-		clip: {
-       		url: '".$name_cmd."',
-       		provider: 'rtmp',
-       		live: true,
-			autoPlay: false,
-			autoBuffering: true
-		}
-		});
-		</script>";
-	} else {
-		$contentscript = "
-		<script language=\"JavaScript\">
-		flowplayer('container1', '".$js_dir."flowplayer/flowplayer-3.2.15.swf', {
-		plugins: {
-        	pseudo: {
-            	url: '".$js_dir."flowplayer/flowplayer.pseudostreaming-3.2.11.swf'
-        	}
-		},
-		clip: {
-        		provider: 'pseudo',
-			url: '".$name_cmd."',
-			baseUrl: 'http://".$storageserver.":".$storageport."/',
-			autoPlay: false,
-			autoBuffering: true
-		}
-
-		});
-		</script>";
-	}
-}
-
-/*	global definitions for all other players but flowplayer_flash	*/
-if($player != "flowplayer_flash"){
-	if($name_cmd == $uid){
-       	$tag .= "<source src=\"rtmp://".$crtmpserver."/live/".$name_cmd."\" type=\"".$type."\" />";
-	} else {
-       	$tag .= "<source src=\"http://".$storageserver.":".$storageport."/".$name_cmd."\" type=\"".$type."\" />";
-	}
-	$tag .= "</video></div>";
+/*	global definitions for all other players but flowplayer	*/
+if($name_cmd == $uid){
+	$file_src = "rtmp://".$crtmpserver."/live/".$name_cmd;
+  	$tag .= "<source src=\"".$name_cmd."\" type=\"".$type."\" />";
 } else {
-	$tag .= "</div>";
+	$file_src = "http://".$storageserver.":".$storageport."/".$name_cmd;
+       	$tag .= "<source src=\"".$file_src."\" type=\"".$type."\" />";
 }
+$tag .= "</video></div>";
 
-/*	flowplayer_html5 definitions	*/
-if($player == "flowplayer_html5"){
+/*	flowplayer definitions	*/
+if($player == "flowplayer"){
 	$style = "<link rel=\"stylesheet\" href=\"".$js_dir."flowplayer/skin/minimalist.css\" type=\"text/css\" media=\"screen\" />
 	<style>
 	.flowplayer {
@@ -98,17 +62,16 @@ if($player == "flowplayer_html5"){
 	}
 	</style>";
 
-	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>
-	<script type=\"text/javascript\">
-		flowplayer.conf.rtmp = 'rtmp://".$crtmpserver."/live';
-		flowplayer.conf.splash = 'true';
-		if (/flash/.test(location.search)) {
-			flowplayer.conf.engine = 'flash';
-			flowplayer.conf.swf = '".$js_dir."flowplayer/flowplayer.swf';
-		}
-	</script>";
+	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>";
 
-	$contentscript = "";
+	$contentscript ="
+		<script>
+			$('#container1').flowplayer({
+   				swf: 'scripts/flowplayer/flowplayer.swf',
+   				rtmp: 'rtmp://".$crtmpserver."/live'
+			});
+		</script>
+	";
 }
 
 /* jwplayer and default defintions	*/
@@ -123,71 +86,51 @@ if($player == "jwplayer" || !isset($player)){
 	}
 
 	$contentscript = "
-	<script type=\"text/javascript\">
-	$(document).ready(function() {
-	var flashvars = {
-        streamer:'rtmp://".$crtmpserver."/live',
-        provider:'rtmp',
-        allowscriptaccess:'always',
-        file:'".$name_cmd."',
-        autostart:'false',
-        'rtmp.subscribe':'false',
-        'modes': [
-                {type: 'html5'},
-                {type: 'flash', src: '".$js_dir."jwplayer/jwplayer.flash.swf'},
-                {type: 'download'}
-        ]
-	};
-	var params = { allowfullscreen:'true', allowscriptaccess:'always', wmode:'opaque', stretching:'fill', controlbar:'over' };
-	var attributes = { id:'player1', name:'player1' };
-	swfobject.embedSWF('".$js_dir."jwplayer/player.swf','container1','".$width."','".$height."','9.0.115','false', flashvars, params, attributes);
-	});
-	</script>";
+	<script>
+		jwplayer('container1').setup({
+    		streamer: 'rtmp://".$crtmpserver."/live',
+    		provider: 'rtmp',
+    		allowscriptaccess: 'always',
+    		file: '".$file_src."',
+		image: '".$thumbs_dir.$filename."_thumb.png',
+    		width: '".$width."',
+    		height: '".$height."',
+    		autostart: 'false',
+    		'rtmp.subscribe': 'false',
+    		'modes': [
+            	{type: 'html5'},
+            	{type: 'flash', src: 'scripts/jwplayer/jwplayer.flash.swf'},
+            	{type: 'download'}
+    		],
+    		primary: 'html5'
+		});
+	</script>
+	";
 }
 
 /*	projekktor definitions	*/
 if($player == "projekktor"){
 	$style = "<link rel=\"stylesheet\" href=\"".$js_dir."projekktor/theme/style.css\" type=\"text/css\" media=\"screen\" />";
-
-	$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."projekktor/projekktor-1.2.01r130.min.js\"></script>";
-
-	$contentscript = "
+	$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."projekktor/projekktor-1.2.24r229.min.js\"></script>";
+	$headscript .= "
 	<script type=\"text/javascript\">
-	$(document).ready(function() {
-	projekktor('#container1', {
-    	volume: 1.0,
-    	playerFlashMP4: '".$js_dir."projekktor/jarisplayer.swf',
-    	playerFlashMP3: '".$js_dir."projekktor/jarisplayer.swf',
-    	title: '".$title."',
-    	ID: 'playerID',
-    	debug: 'false',
-    	loop: 'false',
-    	allowFullScreen: 'true',
-    	wmode: 'opaque',
-    	seamlesstabbing: 'false',
-    	autoplay: 'false',
-    	controls: 'true',
-	height: '".$height."',
-	width: '".$width."',
-    	//poster: 'images/flash_thumb.jpg',
-    	//cover: 'images/flash_thumb.jpg',
-    	file: '".$name_cmd."',
-    	streamType: 'rtmp',
-    	streamServer: 'rtmp://".$crtmpserver."/live',
-    	flashStreamType: 'rtmp',
-    	flashRTMPServer: 'rtmp://".$crtmpserver."/live',
-    	playbackQuality: 'large',
-    	playlist: [
-		{
-			0:{src:'".$name_cmd."', type: '".$type."', quality: 'large', streamType: 'rtmp', streamServer: 'rtmp://".$crtmpserver."/live'}
-		}
-    ]
-	});
-	});
+		$(document).ready(function() {
+			projekktor('#container1', {
+    				volume: 0.8,
+    				playerFlashMP4: '".$js_dir."projekktor/jarisplayer.swf',
+    				playerFlashMP3: '".$js_dir."projekktor/jarisplayer.swf',
+    				title: '".$title."',
+    				controls: true,
+    				playlist: [{
+					0:{src:'".$name_cmd."',type:'".$type."'},
+					config:{streamType:'rtmp', streamServer:'rtmp://".$crtmpserver."/live'}
+				}]
+			});
+		});
 	</script>";
 }
 
 /*	writing our template... */
-$body = doPlayer($style_main,$style,$headscript,$title,$tag,$contentscript,$js_dir,$js_dir.$jquery,$swfobject);
+$body = doPlayer($style_main,$style,$headscript,$title,$tag,$contentscript,$js_dir,$jq_dir);
 echo $body;
 ?>
