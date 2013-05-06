@@ -42,9 +42,8 @@ usage:
 4. to stop an encoding procedure of a media file, click on the stop besides the media file.
 5. if you just click on the thumbnail or the link, you will get the high quality version of the video.
 
-optimized to run under linux, playback tested with windows, linux. (want to assist me, please contact me)
-uses flash player, pseudo rtmp playback (flowplayer_html5, projekktor) works with html5 in most cases,
-so you should be fine on your iPad.
+optimized to run under linux, playback tested with windows, linux. (want to assist me, please contact me),
+works with html5 in most cases, so you should be fine on your iPad.
 
 known bugs:
 
