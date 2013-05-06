@@ -34,6 +34,7 @@ Mediafiles and webserver dont have to be on the same machine, same goes for the 
 (i.e. for really large deployments: nfs mount to the mediafiles mass-create the thumbs and metadata files 
 with a avconv bash script, and serve them via an nginx instance back into the webstreamer).
 
+
 usage:
 
 1. go to a directory with media files in it.
