@@ -39,3 +39,4 @@ added metadata support
 updated all players to the latest version
 switch for flowplayer is now flowplayer, does not need further differentiation between html5 and flash
 solid handling of directories (nothing disappearing, nothing showing up as dir thats a file...)
+removed the need for swfobject
