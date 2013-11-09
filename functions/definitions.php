@@ -16,8 +16,8 @@ $filetype = array(
 );
 
 //list of mime types.
-$typesArray = array('avi'=>'video/x-msvideo','mpg'=>'video/mpeg','mp4'=>'video/mp4','m4v'=>'video/mp4','mkv'=>'video/x-matroska',
-	'ogm'=>'video/ogg','wmv'=>'video/x-ms-wmv','flv'=>'video/x-flv');
+$typesArray = array('avi'=>'video/mp4','mpg'=>'video/mp4','mp4'=>'video/mp4','m4v'=>'video/mp4','mkv'=>'video/x-matroska',
+	'ogm'=>'video/ogg','wmv'=>'video/mp4','flv'=>'video/mp4','webm'=>'video/webm');
 
 /**********************************************************************************************************************************/
 /*********************************************************************************************************************[ IMAGES ]***/

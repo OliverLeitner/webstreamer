@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors","On");
+ini_set("display_errors","Off");
 include_once("functions/functs.php");
 include_once("templates/player.php");
 include_once("config.php");
@@ -37,17 +37,19 @@ if($name_cmd == ""){
 }
 
 /* global vars possible to set... */
-$tag = "<div id=\"css-poster\" data-ratio=\"1.0\" class=\"flowplayer minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live\">
-<video id=\"container1\" class=\"projekktor\" width=\"".$width."\" height=\"".$height."\" 
+$tag = "<div id=\"css-poster\" data-swf=\"".$js_dir."projekktor/swf/StrobeMediaPlayback/StrobeMediaPlayback.swf\" data-ratio=\"1.0\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live\" data-engine=\"flash\">
+<video id=\"container1\" class=\"player projekktor\" width=\"".$width."\" height=\"".$height."\" 
 poster=\"".$thumbs_dir.$filename."_thumb.png\" 
-title=\"".$title."\" controls>";
+title=\"".$title."\" controls preload>";
 
 /*	global definitions for all other players but flowplayer	*/
 if($name_cmd == $uid){
 	$file_src = "rtmp://".$crtmpserver."/live/".$name_cmd;
+	$flow_src = $name_cmd;
   	$tag .= "<source src=\"".$name_cmd."\" type=\"".$type."\" />";
 } else {
-	$file_src = "http://".$storageserver.":".$storageport."/".$name_cmd;
+	$file_src = "https://".$storageserver.":".$storageport."/".$name_cmd;
+	$flow_src = $file_src;
        	$tag .= "<source src=\"".$file_src."\" type=\"".$type."\" />";
 }
 $tag .= "</video></div>";
@@ -64,14 +66,18 @@ if($player == "flowplayer"){
 
 	$headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>";
 
-	$contentscript ="
-		<script>
-			$('#container1').flowplayer({
-   				swf: 'scripts/flowplayer/flowplayer.swf',
-   				rtmp: 'rtmp://".$crtmpserver."/live'
-			});
-		</script>
-	";
+
+	$headscript .= '<script>
+		flowplayer.conf.rtmp = "rtmp://'.$crtmpserver.'/live";
+	</script>';
+
+	$contentscript = "";
+
+	$tag = '<div class="flowplayer" data-rtmp="rtmp://'.$crtmpserver.'/live" data-engine="flash">
+	<video>
+		<source type="'.$type.'" src="'.$flow_src.'" />
+	</video>
+	</div>';
 }
 
 /* jwplayer and default defintions	*/
@@ -92,6 +98,7 @@ if($player == "jwplayer" || !isset($player)){
     		provider: 'rtmp',
     		allowscriptaccess: 'always',
     		file: '".$file_src."',
+		type: '".$type."',
 		image: '".$thumbs_dir.$filename."_thumb.png',
     		width: '".$width."',
     		height: '".$height."',
@@ -110,19 +117,19 @@ if($player == "jwplayer" || !isset($player)){
 
 /*	projekktor definitions	*/
 if($player == "projekktor"){
-	$style = "<link rel=\"stylesheet\" href=\"".$js_dir."projekktor/theme/style.css\" type=\"text/css\" media=\"screen\" />";
-	$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."projekktor/projekktor-1.2.24r229.min.js\"></script>";
+	$style = "<link rel=\"stylesheet\" href=\"".$js_dir."projekktor/themes/maccaco/projekktor.style.css\" type=\"text/css\" media=\"screen\" />";
+	$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."projekktor/projekktor-1.3.01.min.js\"></script>";
 	$headscript .= "
 	<script type=\"text/javascript\">
 		$(document).ready(function() {
 			projekktor('#container1', {
-    				volume: 0.8,
-    				playerFlashMP4: '".$js_dir."projekktor/jarisplayer.swf',
-    				playerFlashMP3: '".$js_dir."projekktor/jarisplayer.swf',
-    				title: '".$title."',
+    				volume: 0.4,
+    				playerFlashMP4: '".$js_dir."projekktor/swf/StrobeMediaPlayback/StrobeMediaPlayback.swf',
+    				playerFlashMP3: '".$js_dir."projekktor/swf/StrobeMediaPlayback/StrobeMediaPlayback.swf',
+    				title: '".$name_cmd."',
     				controls: true,
     				playlist: [{
-					0:{src:'".$name_cmd."',type:'".$type."'},
+					0:{src:'".$file_src."',type:'".$type."'},
 					config:{streamType:'rtmp', streamServer:'rtmp://".$crtmpserver."/live'}
 				}]
 			});

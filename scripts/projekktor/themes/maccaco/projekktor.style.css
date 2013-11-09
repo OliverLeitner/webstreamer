@@ -2,7 +2,7 @@
 Theme Name: MACCACO
 Theme URI: http://www.projekktor.com/downloads
 Description: this theme is a screenr clone
-Version: 1.0
+Version: 2.2
 Author: Michel Maillard
 Author URI: http://www.porkhead.org
 */
@@ -12,16 +12,16 @@ Author URI: http://www.porkhead.org
 general
 ***************************************/
 .projekktor {
-    background-color:#000;
+    background-color: #000; 
     font-family: 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
     font-size: 12px;
     font-weight: bold;
     text-transform:uppercase;
-    text-shadow: 0 1px 1px #0c0c0c;
     padding:0;
     display:block;
     position: relative;
-    overflow: hidden;    
+    overflow: hidden;
+    width: 400px;
 }
 
 .pptestcard {
@@ -50,6 +50,7 @@ general
 display plugin
 ***************************************/
 .ppdisplay {
+    background-color: #000; 
     position: relative !important;
     top: 0;
     left: 0;
@@ -76,7 +77,6 @@ display plugin
     height: 84px;
     width: 84px;
     display: block;
-
     padding: 0px;
     background: url("start.png") no-repeat left top transparent;
 }
@@ -113,10 +113,16 @@ controlbar plugin
     bottom: 0;
     right:0;
     display: block;
-    overflow: hidden;
     width: 100%;
     height: 36px;
-    background: url("player.png") repeat-x scroll 0 0 #0f0e0e;
+    background: #2e2d2d; /* Old browsers */
+    background: -moz-linear-gradient(top,  #2e2d2d 0%, #0f0e0e 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2e2d2d), color-stop(100%,#0f0e0e)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #2e2d2d 0%,#0f0e0e 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #2e2d2d 0%,#0f0e0e 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #2e2d2d 0%,#0f0e0e 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #2e2d2d 0%,#0f0e0e 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e2d2d', endColorstr='#0f0e0e',GradientType=0 ); /* IE6-9 */
     border-style:solid;
     border-color:#413e3e;
     border-width:1px 0;
@@ -146,10 +152,12 @@ controlbar plugin
     -moz-opacity: 1;
     -khtml-opacity: 1;
     opacity: 1;
-    -webkit-transition: opacity 0.5s linear;
-    -moz-transition: opacity 0.5s linear;
-    -o-transition: opacity 0.5s linear;
-    transition: opacity 0.5s linear;    
+    -webkit-backface-visibility: hidden;
+    -webkit-transform:translate3d(0,0,0);    
+    -webkit-transition: opacity 0.1s linear;
+    -moz-transition: opacity 0.1s linear;
+    -o-transition: opacity 0.1s linear;
+    transition: opacity 0.1s linear;    
 }
 
 
@@ -158,7 +166,9 @@ controlbar plugin
     -moz-opacity: 0;
     -khtml-opacity: 0;
     opacity: 0;
-    filter: alpha(opacity=0); 
+    filter: alpha(opacity=0);
+    -webkit-backface-visibility: hidden;
+    -webkit-transform:translate3d(0,0,0);    
     -webkit-transition: opacity 0.5s linear;
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear;
@@ -177,8 +187,7 @@ controlbar plugin
     margin:0;
 } 
 
-.ppcontrols ul.right {
-    background: url("player.png") repeat-x scroll 0 0 #0f0e0e;    
+.ppcontrols ul.right { 
     position: relative;
     top: 0;
     right: 0;
@@ -204,20 +213,6 @@ controlbar plugin
     float: right;
     position: relative;    
 }
-
-.pptitle {
-    
-    padding: 0 10px;
-    color: #fff;
-    white-space: nowrap;
-    text-align: left;
-    line-height: 30px;
-    height:30px;
-    border-left:1px solid #413e3e;
-    font-size:11px;
-    width: 100%;
-}
-
 
 /* PLAY / PAUSE - left */
 .ppplay,
@@ -455,7 +450,7 @@ background: url("maccaco.png") no-repeat -91px top transparent;
     top:0;
     left:0;
     height: 5px;
-    width: 100%; 
+    width: 100%;    
 }
 
 .ppplayhead, .pploaded {
@@ -468,6 +463,12 @@ background: url("maccaco.png") no-repeat -91px top transparent;
     background-color:#fff;
     cursor: pointer;
     z-index: 301;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform:translate3d(0,0,0);    
+    -webkit-transition: width 0.1s linear;
+    -moz-transition: width 0.1s linear;
+    -o-transition: width 0.1s linear;
+    transition: width 0.1s linear;        
 }
 
 .ppcuepoint {
@@ -492,9 +493,7 @@ background: url("maccaco.png") no-repeat -91px top transparent;
     z-index: 10;
     background: rgb(65, 62, 62) ;
     opacity: 0.8;
-    /* ie7 */
     filter: alpha(opacity = 80);
-    /* ie8 */
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
@@ -502,6 +501,39 @@ background: url("maccaco.png") no-repeat -91px top transparent;
     margin-top: -5px;
 }
 
+
+.ppscrubbertip {
+    padding: 3px;
+    position: absolute;
+    top: -30px;
+    left: 25px;
+    font-size: 11px;
+    line-height: 15px;
+    color: #fdfdfd;
+    background: #2e2d2d;
+    z-index: 10;
+    display: none;
+}
+.ppscrubbertip:after {
+	top: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.ppscrubbertip:after {
+	border-color: rgba(2, 28, 79, 0);
+	border-top-color: #333;
+	border-width: 5px;
+	left: 50%;
+	margin-left: -5px;
+}
+
+
+/* Context Menu */
 .ppcontextmenu.active {
     display: block;
 }
@@ -540,3 +572,113 @@ background: url("maccaco.png") no-repeat -91px top transparent;
     color: #fff;
     background-color: #333;
 }
+
+
+/****************************
+/* VAST ad plugin specific */
+/***************************/
+.ppad .left,
+.ppad .right {
+    display: none;
+    border: none;
+}
+
+.ppad .ppcontrols {
+    background: transparent;
+    border: none;
+}
+
+.ppad .ppadtitle {
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+    border: none;    
+}
+
+.ppadskip {
+    position: absolute;
+    padding-top: 2px;
+    bottom: -10px;
+    right: 0px;
+    width: 85%;
+    height: 28px;
+    background-color: transparent;
+    color: #fdfdfd;
+}
+
+.ppskip.locked {
+    background-color: red;
+}
+
+.ppskip.unlocked {
+    cursor: pointer;
+    color: #00B0FF;
+}
+
+
+.pppostad .ppprev.active {
+    display: none;
+}
+
+.ppadoverlay.inactive {
+    display: none;
+}
+
+
+/****************************
+/* Subtitles plugin specific */
+/***************************/
+.pptracksbtn.inactive,
+.pptracks.inactive {
+    display: none;
+}
+
+.pptracksbtn.active,
+.pptracks.active {
+    display: block;
+}
+
+.pptracks span {
+    position: relative;
+}
+
+.pptracksbtn.on,
+.pptracksbtn.off {
+    background: url("maccaco.png") no-repeat -120px -72px transparent;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-left:1px solid #413e3e;
+    border-right:1px solid #000;    
+}
+
+.pptracksbtn.on {
+    background: url("maccaco.png") no-repeat -92px -72px transparent;
+}
+
+.pptracksbtn:hover {
+    background: url("maccaco.png") no-repeat -118px -106px transparent;
+}
+
+.pptracks  {
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    color: #fdfdfd;
+    background:rgb(0,0,0);
+    background: transparent\9;
+    background:rgba(0,0,0,0.6);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);
+    zoom: 1;
+    padding: 5px 0;
+    z-index: 1000;
+}
+
+.pptracks.shifted {
+    bottom: 38px;
+}
+

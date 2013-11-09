@@ -4,7 +4,7 @@
 $js_dir = "scripts/";
 
 //the query install
-$jquery = "jquery-2.0.0.min.js";
+$jquery = "jquery-2.0.3.min.js";
 
 //main style
 $style_main = "style/style_dir.css";
@@ -19,14 +19,14 @@ $meta_dir = "meta/";
 set the player for streaming we want to use
 options:
 	jwplayer (WORKING!)
-	projekktor (BROKEN!, only pseudo rtmp from files)
+	projekktor (WORKING!)
 	flowplayer (WORKING!)
 
 beware: pseudo playback almost always only support flv,m4v,mp4
 it also doesnt work with slow bandwith connections (LAN only, if no fast server avail.)
 if youre using an iPad, iPhone, Android, only the pseudo streaming options might work...
 */
-$player = "jwplayer";
+$player = "projekktor";
 
 //jwplayer registration key for stats...
 //leave blank if you dont have one...
@@ -41,7 +41,7 @@ $buffer = "250";
 $include_dirs = array("directory1","directory2","directory3");
 
 //just show files with extensions in this array...
-$include_files = array("avi","flv","m4v","mp4","ogm","mpg","mpeg","mkv","wmv");
+$include_files = array("avi","flv","m4v","mp4","ogm","mpg","mpeg","mkv","wmv","mov");
 
 //the rtmp media server domain to look up
 //!IMPORTANT! currently we only support crtmpserver
