@@ -14,7 +14,7 @@ function doIndex($style,$jsroot,$jquery,$height,$width,$folder,$list_folders,$li
 	 $template = file_get_contents("templates/index.html");
 	 $template = str_replace("###width###", $width+20, $template); //we are adding 20px for the controls...
 	 $template = str_replace("###height###", $height, $template);
-	 $template = str_replace("###folder###", $folder, $template);
+	 $template = str_replace("###folder###", htmlentities($folder), $template);
 	 $template = str_replace("###list_folders###", $list_folders, $template);
 	 $template = str_replace("###list_files###", $list_files, $template);
 	 $template = str_replace("###js_dir###", $jsroot, $template);

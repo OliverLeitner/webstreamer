@@ -11,7 +11,7 @@ $file=$_GET['file'];
 $name=$_GET['name'];
 $uid=md5($_SERVER['REMOTE_ADDR'].$name); //multi user stuff...
 
-$source="avconv -re -i '{$file}'";
+$source=escapeshellcmd("avconv -re -i '{$file}'");
 $target="tcp://127.0.0.1:6666?pkt_size=650"; //1613
 
 //$presets = "-threads 2";
@@ -26,11 +26,13 @@ $video="-vcodec libx264 -pass 1 -b:v 200k -s vga -strict experimental -g 20 -me_
 
 $output = "-f flv -r 30 -metadata streamName=".$uid;
 
+$subtitles = "-c:s copy";
+
 $check_cmd = "ps auxf |grep {$uid} |awk '{ print $13}' |grep avconv";
 $checked = exec($check_cmd);
 
 //only start encoder if its not already running...
 if($checked == ""){
-	passthru("{$init} {$source} {$presets} {$audio} {$video} {$output} '{$target}'",$returnval);
+	passthru("{$init} {$source} {$presets} {$audio} {$video} {$subtitles} {$output} '{$target}'",$returnval);
 }
 ?>

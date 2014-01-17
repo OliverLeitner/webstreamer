@@ -9,15 +9,15 @@ $headscript = "<script src=\"".$js_dir."flowplayer/flowplayer.min.js\"></script>
 $headscript .= '<script type="text/javascript">
 	flowplayer.conf.rtmp = "rtmp://'.$crtmpserver.'/live";
 	flowplayer.conf.muted = "true";
-	flowplayer.conf.native_fullscreen = "false";
+	flowplayer.conf.native_fullscreen = "true";
 	flowplayer.conf.live = "false";
 </script>';
 
 $contentscript = "";
 
-$tag = '<div class="flowplayer" poster="'.$thumbs_dir.$filename.'_thumb.png" data-rtmp="rtmp://'.$crtmpserver.'/live" data-engine="flash">
+$tag = '<div class="flowplayer" poster="'.htmlentities($thumbs_dir.$filename).'_thumb.png" data-rtmp="rtmp://'.$crtmpserver.'/live" data-engine="flash">
 <video>
-	<source type="'.$type.'" src="'.$short_src.'" />
+	<source type="'.htmlentities($type).'" src="'.htmlentities($short_src).'" />
 </video>
 </div>';
 ?>

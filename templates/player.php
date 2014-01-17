@@ -14,7 +14,7 @@ function doPlayer($main_style,$style,$headscript,$title,$tag,$bodyscript,$js_dir
 	 $template = file_get_contents("templates/player.html");
 	 $template = str_replace("###players_styles###", $style, $template);
 	 $template = str_replace("###players_scripts###", $headscript, $template);
-	 $template = str_replace("###title###", $title, $template);
+	 $template = str_replace("###title###", htmlentities($title), $template);
 	 $template = str_replace("###players_content_tag###", $tag, $template);
 	 $template = str_replace("###players_content_script###", $bodyscript, $template);
 	 $template = str_replace("###js_dir###", $js_dir, $template);

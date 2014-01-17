@@ -10,11 +10,9 @@ if($jw_key != ""){
 
 $contentscript = "<script type=\"text/javascript\">
 	jwplayer('container1').setup({
-		file: '".$long_src."',
-		image: '".$thumbs_dir.$filename."_thumb.png',
+        file: '".htmlentities(str_replace($quotes, "", $long_src))."',
+		image: '".htmlentities(str_replace($quotes, "",$thumbs_dir.$filename))."_thumb.png',
 		'rtmp.subscribe': 'false',
-		width: '".$width."',
-		height: '".$height."',
 		primary: 'flash'
 	});
 </script>";

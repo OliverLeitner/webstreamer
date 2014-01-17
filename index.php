@@ -33,10 +33,15 @@ ini_set("display_errors","Off");
 
 $this_script = basename(__FILE__);
 $this_folder = $_GET['dir'];
+$this_folder = str_replace("..", "", $this_folder);
+
+//if you have all your files in subfolders relative to the directory that contains this file, please uncomment
+//the following line for further security
+//$this_folder = dirname(__FILE__).$this_folder;
 
 //always root to / if no param given
 if(!isset($_GET['dir'])){
-	$_GET['dir'] = $this_script."?dir=/";
+	$this_folder = $this_script."?dir=/";
 	header("Location: ".$this_script."?dir=/");
 }
 
@@ -55,15 +60,15 @@ if ($handle = opendir($this_folder))
         if ($file != "." && $file != ".." && $file != './' && $file != $this_script)
 		{
 			// Get file info.
-			$stat				=	stat($_GET['dir'].$file); // ... slow, but faster than using filemtime() & filesize() instead.
-			$info				=	pathinfo($_GET['dir'].$file);
+			$stat				=	stat($this_folder.$file); // ... slow, but faster than using filemtime() & filesize() instead.
+			$info				=	pathinfo($this_folder.$file);
 			// Organize file info.
-			$item['dir']		=	$_GET['dir'];
+			$item['dir']		=	$this_folder;
 
-			if(is_file($_GET['dir'].$file)){
-				$item['name']		=	$info['filename'];
+			if(is_file($this_folder.$file)){
+			    $item['name']		=	$info['filename'];
 			} else {
-                                $item['name']           =       $info['basename'];
+                $item['name']           =       $info['basename'];
 			}
 
 			$item['lname']		=	strtolower($info['filename']);
@@ -80,7 +85,7 @@ if ($handle = opendir($this_folder))
 			if(is_file($item['dir'].$item['name'].".".$item['ext']))
 			{
 				//filter out all files we do not want to show...
-				if(in_array($info['extension'],$include_files))
+				if(in_array($item['ext'],$filetype['video']))
 				{
 					array_push($file_list, $item);
 				}
@@ -124,7 +129,7 @@ if($folder_list) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
 			$listfolders .= '<tr class="folder">
-				<td colspan="3" class="name"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/">'.$item['name'].'</a></td>
+				<td colspan="3" class="name"><img src="images/folder.png" alt="'.$item['name'].'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/">'.$item['name'].'</a></td>
 			</tr>';
 		}
 	}
@@ -136,19 +141,19 @@ if($file_list){
 		//creating thumbnail for the player on player load
 		$filename = preg_replace("/ /","_",$item['name'].".".$item['ext']);
 		$dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
-		$cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".$item['dir'].$item['name'].".".$item['ext']."' -r 16 -qscale 1 -s 320x240 -f image2 '".$thumbs_dir.$filename."_thumb.png'";
-		$out_duration_cmd = "avconv -i '".$item['dir'].$item['name'].".".$item['ext']."' 2>&1 | grep Duration > '".$meta_dir.$filename.".txt'";
+        $cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.$filename)."_thumb.png'";
+        $out_duration_cmd = "avconv -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".escapeshellcmd($meta_dir.$filename).".txt'";
 		if(!file_exists($thumbs_dir.$filename."_thumb.png")){
-        		exec($cmd_thumb);
+        	exec($cmd_thumb);
 			compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
 			gzcompress($thumbs_dir.$filename."_thumb.png");
 		}
 		if(!file_exists($meta_dir.$filename.".txt")){
 			exec($out_duration_cmd);
 		}
-		$out_duration = exec("cat ".$meta_dir.$filename.".txt");
+		$out_duration = exec("cat ".escapeshellcmd($meta_dir.$filename).".txt");
 		$out_duration = str_replace(",","<br />",$out_duration);
-		$popup_link = 'popitup(\'player.php?name='.urlencode($item['dir']).urlencode($item['name']).'.'.$item['ext'].'&amp;file='.urlencode($item['name']).'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
+		$popup_link = 'popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
 		$listfiles .= '<tr class="file">
 			<td class="thumb"><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img src="'.$thumbs_dir.$filename.'_thumb.png" width="200" border="0" /></a></td>
 			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>

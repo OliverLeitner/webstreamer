@@ -83,17 +83,16 @@ function time_ago($timestamp, $recursive = 0)
 function dirEmpty($dirname,$allowed){
 	$has_allowed = FALSE;
 	$findtype = "";
-	$excludedirs = '-not -path "*svn*|*etc*|*root*|*lost+found*|*boot*"';
+	$excludedirs = '-not -path "*svn*|*etc*|*root*|*lost+found*|*boot*|*app*"';
 	foreach($allowed["video"] AS $key => $ending){
-		$findtype .= "-name \*.".$ending." -o ";
+		$findtype .= "-name *.".$ending." -o ";
 	}
 	
 	$findtype = rtrim($findtype," -o ");
-	
-	//we dont run this if were on top of em all...
-	if($_GET["dir"] != "/")
-		$result = exec("find '".$dirname."' -not -path ".$excludedirs." -type f ".$findtype);
 
+    //we dont run this if were on top of em all...
+	if($_GET["dir"] != "/")
+        $result = exec("find '".escapeshellcmd($dirname)."' -not -path ".escapeshellcmd($excludedirs)." -type f ".escapeshellcmd($findtype));
 	if($result != "" || $_GET["dir"] == "/"){
 		$has_allowed = TRUE;
 	}
