@@ -35,7 +35,7 @@ $this_script = basename(__FILE__);
 $this_folder = $_GET['dir'];
 $this_folder = str_replace("..", "", $this_folder);
 
-if(!preg_match("@{$mediaroot}@",$this_folder)){
+if(!preg_match("@^{$mediaroot}@",$this_folder)){
     $this_folder = $mediaroot.$this_folder;
 }
 
@@ -79,15 +79,15 @@ if ($handle = opendir($this_folder))
 			$item['mtime']		=	$stat['mtime'];
 
 			//setting video types...
-			$item['type']		=	$typesArray[$item['ext']];
+            $item['type']		=	$typesArray[$item['ext']];
 
 			// Add files to the file list...
 			if(is_file($item['dir'].$item['name'].".".$item['ext']))
 			{
 				//filter out all files we do not want to show...
 				if(in_array($item['ext'],$filetype['video']))
-				{
-					array_push($file_list, $item);
+                {
+                    array_push($file_list, $item);
 				}
 			}
 			// ...and folders to the folder list.
@@ -147,7 +147,7 @@ if($file_list){
         	exec($cmd_thumb);
 			compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
 			gzcompress($thumbs_dir.$filename."_thumb.png");
-		}
+        }
 		if(!file_exists($meta_dir.$filename.".txt")){
 			exec($out_duration_cmd);
 		}
