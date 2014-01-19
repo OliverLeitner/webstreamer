@@ -43,6 +43,9 @@ $include_dirs = array("directory1","directory2","directory3");
 //just show files with extensions in this array...
 $include_files = array("avi","flv","m4v","mp4","ogm","mpg","mpeg","mkv","wmv","mov");
 
+//security setting jails media indexing to media storage dir...
+$mediaroot = "/var/www";
+
 //the rtmp media server domain to look up
 //!IMPORTANT! currently we only support crtmpserver
 $crtmpserver = $_SERVER['SERVER_NAME'];

@@ -35,9 +35,9 @@ $this_script = basename(__FILE__);
 $this_folder = $_GET['dir'];
 $this_folder = str_replace("..", "", $this_folder);
 
-//if you have all your files in subfolders relative to the directory that contains this file, please uncomment
-//the following line for further security
-//$this_folder = dirname(__FILE__).$this_folder;
+if(!preg_match("@{$mediaroot}@",$this_folder)){
+    $this_folder = $mediaroot.$this_folder;
+}
 
 //always root to / if no param given
 if(!isset($_GET['dir'])){
