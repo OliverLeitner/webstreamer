@@ -40,3 +40,8 @@ updated all players to the latest version
 switch for flowplayer is now flowplayer, does not need further differentiation between html5 and flash
 solid handling of directories (nothing disappearing, nothing showing up as dir thats a file...)
 removed the need for swfobject
+
+1.1 (further security fixes)
+
+added $mediaroot parameter to config.php to make sure that users dont jump out of the media storage directory.
+added multiple major security fixes, thanks to contributions by Eric Sesterhenn.
