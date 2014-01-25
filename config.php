@@ -4,7 +4,7 @@
 $js_dir = "scripts/";
 
 //the query install
-$jquery = "jquery-2.0.3.min.js";
+$jquery = "zepto.min.js";
 
 //main style
 $style_main = "style/style_dir.css";
