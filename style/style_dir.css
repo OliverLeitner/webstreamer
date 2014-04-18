@@ -178,18 +178,18 @@ ul {
     #right table {
         margin:0px 0px;
     }
-    #right table tr td.name,#right table tr td.size {
+    #right table tr.file td.name,#right table tr td.size {
         display:none;
     }
-    #right table tr td.name img {
+    #right table tr.file td.name img {
         display:none;
     }
-    #right table tr td.start,#right table tr td.stop {
+    #right table tr.file td.start,#right table tr td.stop {
         float:left;
         width:100px;
         padding:9px;
     }
-    #right table tr td.start a,#right table tr td.stop a {
+    #right table tr.file td.start a,#right table tr td.stop a {
         font-size:2em;
     }
     td.thumb {
@@ -204,7 +204,7 @@ ul {
         text-align:center;
         padding-bottom:10px;
     }
-    .item_title {
+   .item_title {
         position:absolute;
         display:inline;
         overflow:hidden;
