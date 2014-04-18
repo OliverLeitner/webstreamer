@@ -58,6 +58,6 @@ $crtmpserverlog = "/var/log/crtmpserver/main.log";
 //if storageserver and crtmpserver are on the same machine
 //leave $storageservervar as is.
 //this server holds your media files.
-$storageserver = $_SERVER['SERVER_NAME'];
+$storageserver = "https://".$_SERVER['SERVER_NAME'];
 $storageport = "8000";
 ?>

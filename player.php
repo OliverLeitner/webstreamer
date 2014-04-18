@@ -57,7 +57,7 @@ if($name_cmd == $uid){
 
     $tag .= "<source src=\"".htmlentities($long_src)."\" type=\"".htmlentities($type)."\" />";
 } else {
-	$long_src = "https://".$storageserver.":".$storageport."/".$name_cmd;
+	$long_src = $storageserver.":".$storageport."/".$name_cmd;
 	$short_src = $long_src;
 	$default_src = $long_src;
 
