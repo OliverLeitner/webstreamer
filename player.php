@@ -30,6 +30,14 @@ if(!file_exists($thumbs_dir.$filename."_thumb.png")){
 	gzcompress($thumbs_dir.$filename."_thumb.png");
 }
 
+//reading out the duration of a clip to have a scrollbar...
+$fp = fopen($meta_dir.$filename.".txt","r");
+$data = fread($fp,filesize($meta_dir.$filename.".txt"));
+fclose($fp);
+preg_match("#Duration: (.+), start#",$data,$duration);
+$parsed = date_parse(trim($duration[1]));
+$seconds = $parsed['hour'] * 3600 + $parsed['minute'] * 60 + $parsed['second'];
+
 //check if we are streaming or not streaming...
 if($name_cmd == ""){
 	$name_cmd = $name;
@@ -38,14 +46,14 @@ if($name_cmd == ""){
 }
 
 /* global vars possible to set... */
-$tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/live\" data-engine=\"flash\">
+$tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver."/vod\" data-engine=\"flash\">
 <video id=\"container1\" class=\"player projekktor\" poster=\"".htmlentities($thumbs_dir.$filename)."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".$height."\" title=\"".htmlentities($title)."\" controls>";
 
 /* global definitions for all other players but flowplayer */
 if($name_cmd == $uid){
-	$long_src = "rtmp://".$crtmpserver."/live/flv:".$name_cmd;
+	$long_src = "rtmp://".$crtmpserver."/vod/flv:".$name_cmd;
 	$short_src = $name_cmd;
-	$default_src = "rtmp://".$crtmpserver."/live/".$name_cmd;
+	$default_src = "rtmp://".$crtmpserver."/vod/".$name_cmd;
 
     $tag .= "<source src=\"".htmlentities($long_src)."\" type=\"".htmlentities($type)."\" />";
 } else {

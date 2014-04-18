@@ -45,3 +45,8 @@ removed the need for swfobject
 
 added $mediaroot parameter to config.php to make sure that users dont jump out of the media storage directory.
 added multiple major security fixes, thanks to contributions by Eric Sesterhenn.
+
+1.2 (mobile style)
+
+webstreamer now resizes to your ipad/iphone/droid... using rudimentary css3 and viewport attributes
+also updated players a bit, improving html5 playback

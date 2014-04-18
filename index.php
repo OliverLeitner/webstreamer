@@ -129,7 +129,7 @@ if($folder_list) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
 			$listfolders .= '<tr class="folder">
-				<td colspan="3" class="name"><img src="images/folder.png" alt="'.$item['name'].'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/">'.$item['name'].'</a></td>
+				<td colspan="3" class="name" title="'.urlencode($item["name"]).'"><img src="images/folder.png" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item["name"]).'">'.urlencode($item['name']).'</a></td>
 			</tr>';
 		}
 	}
@@ -155,8 +155,8 @@ if($file_list){
 		$out_duration = str_replace(",","<br />",$out_duration);
 		$popup_link = 'popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
 		$listfiles .= '<tr class="file">
-			<td class="thumb"><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img src="'.$thumbs_dir.$filename.'_thumb.png" width="200" border="0" /></a></td>
-			<td class="name" id="'.$item['name'].'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
+			<td class="thumb" title="'.urlencode($item["name"]).'"><span class="item_title">'.$item["name"].'</span><a title="'.urlencode($item["name"]).'" href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img alt="'.urlencode($item["name"]).'" src="'.$thumbs_dir.$filename.'_thumb.png" border="0" /></a></td>
+			<td class="name" id="'.$item['name'].'" title="'.urlencode($item["name"]).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
 			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_startstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
 			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_stopstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
 			<td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td>

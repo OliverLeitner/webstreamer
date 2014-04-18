@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta http-equiv="Cache-Control" content="max-age=120" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow" />
+<meta http-equiv="expires" content="Sat, 03 Dec 2011 00:00:00 GMT" />
+<meta name="handheldfriendly" />
+<meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 <title>Media Streaming Archive</title>
 
 <link rel="stylesheet" href="###main_style###" />
@@ -15,7 +27,6 @@ function popitup(url) {
 	return false;
 }
 </script>
-
 </head>
 
 <body>
@@ -28,6 +39,7 @@ function popitup(url) {
 	<li><a href="javascript:history.back();">Go Back!</a></li>
 	<!--li><a href="#"  onclick="javascript:ajax_stopstream('avconv','avconv');">kill all encodes</a></li-->
 </ul>
+<div id="folder_name">###folder###</div>
 </div>
 <!-- menu end -->
 
@@ -39,14 +51,6 @@ function popitup(url) {
 			<td colspan="4">Directory listing for ###folder###</td>
 		</tr>
 	</thead>
-	<tfoot>
-		<tr>
-			<td colspan="2" class="copy"><a target="_blank" href="http://greg-j.com/phpdl/">PHPDL</a> created by <a target="_blank" href="http://greg-j.com">Greg Johnson</a> modifyed by <a href="#" target="_blank">nevermind</a>.</td>
-		</tr>
-		<tr>
-			<td colspan="3" class="cc"><a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img src="http://creativecommons.org/images/public/somerights20.png" alt="CC 3.0" /></a></td>
-		</tr>
-	</tfoot>
 	<tbody>
 <!-- folders -->
 	###list_folders###
