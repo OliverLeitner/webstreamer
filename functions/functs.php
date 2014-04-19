@@ -99,7 +99,6 @@ function dirEmpty($dirname,$allowed){
 	return $has_allowed;
 }
 
-
 function compress_image($source_url, $destination_url, $quality) {
 	$info = getimagesize($source_url);
  
@@ -112,5 +111,47 @@ function compress_image($source_url, $destination_url, $quality) {
  
 	//return destination file
 	return $destination_url;
+}
+
+function myTruncate($string, $limit, $break=".", $pad="...") {
+    if(strlen($string) <= $limit) return $string;
+    if(false !== ($breakpoint = strpos($string, $break, $limit))) {
+        if($breakpoint < strlen($string) - 1) {
+            $string = substr($string, 0, $breakpoint) . $pad;
+        }   
+    }   
+    return $string; 
+}   
+
+function ellipsis($text, $max=100, $append='&hellip;') {
+    if (strlen($text) <= $max) return $text;
+    $out = substr($text,0,$max);
+    if (strpos($text,' ') === FALSE) return $out.$append;
+    return preg_replace('/\w+$/','',$out).$append;
+}   
+
+function catch_regex($string,$regex){
+    $out = preg_split($regex, $string);
+    return $out;
+}   
+
+function substrwords($text,$maxchar,$end='...'){
+    if(strlen($text)>$maxchar){
+        $words=explode(" ",$text);
+        $output = ''; 
+        $i=0;
+        while(1){
+            $length = (strlen($output)+strlen($words[$i]));
+            if($length>$maxchar){
+                break;
+            } else {
+                $output = $output." ".$words[$i];
+                ++$i;
+            };  
+        };  
+    }else{
+        $output = $text;
+    }   
+    return $output.$end;
 }
 ?>
