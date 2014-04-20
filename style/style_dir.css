@@ -1,7 +1,6 @@
 /* hard disk media styles */
 
 /* start orig. styles from index.php */
-
 body{
     font-family: "Lucida Grande",Calibri,Arial;
     font-size: 9pt;
@@ -23,15 +22,6 @@ a:hover{
 img{
     vertical-align: bottom;
     padding: 0 3px 0 0;
-}
-
-table{
-    position:absolute;
-    top:10px;
-    left:0;
-    margin: 0px 300px;
-    padding: 0;
-    width: 600px;
 }
 
 table td{
@@ -121,7 +111,8 @@ li {
 }
 
 ul {
-    top:0;
+    position:fixed;
+    top:30px;
     left:0;
     width:200px;
 }
@@ -136,19 +127,35 @@ ul {
 }
 
 #left {
-    position:fixed;
-    top:0;
+    position:relative;
     left:20px;
     margin:0px;
     padding:0px;
+    width:200px;
+    min-height:200px;
+    float:left;
+}
+
+#left h2 {
+    position:fixed;
+    top:0;
+    left:0;
+    width:200px;
 }
 
 #right {
+    position:relative;
     margin:0px;
     padding:0px;
+    float:left;
+    width:auto;
 }
 
 .item_title {
+    position:absolute;
+    height:0;
+    width:0;
+    overflow:hidden;
     display:none;
 }
 
@@ -163,17 +170,28 @@ ul {
         /* hiding the horizontal scrollbar fragment from resizing... */
         overflow-x:hidden;
     }
-    a {
-        font-size:18pt;
-    }
     table thead, table tfoot {
         display: none;
     }
     #left {
         position:relative;
+        clear:both;
+        float:left;
+        width:400px;
     }
-    table {
+    #left h2 {
         position:relative;
+        clear:both;
+        float:left;
+        width:400px;
+        font-size:1em;
+    }
+    #right {
+        clear:both;
+        float:left;
+    }
+    ul {
+        top:60px;
     }
     #right table {
         margin:0px 0px;
@@ -208,7 +226,6 @@ ul {
         position:absolute;
         display:inline;
         overflow:hidden;
-        word-wrap:break-word;
         padding-top:10px;
         padding-left:10px;
         color:#F30B0B;

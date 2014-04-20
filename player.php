@@ -4,6 +4,12 @@ include("functions/functs.php");
 include("templates/player.php");
 include("config.php");
 
+//initialize memcached support if possible
+$m = "";
+if(isset($memcservers) && $memcservers != ""){
+   $m = init_memcache($memcservers,":"); 
+}
+
 //define jquery full path
 $jq_dir = $js_dir.$jquery;
 
@@ -25,14 +31,26 @@ $filename = str_replace("..", "", $filename);
 $dirname = dirname(dirname(__FILE__)."/".$name);
 $cmd_thumb = "avconv -ss 00:3:00 -t 1 -i '/".escapeshellcmd($name)."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.$filename)."_thumb.png'";
 if(!file_exists($thumbs_dir.$filename."_thumb.png")){
-	exec($cmd_thumb);
-	compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
-	gzcompress($thumbs_dir.$filename."_thumb.png");
+    if($m != ""){
+        $m->set('cmd_thumb',exec($cmd_thumb));
+        $m->set('compress_image',compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60));
+        $m->set('gzcompress',gzcompress($thumbs_dir.$filename."_thumb.png"));
+    } else {
+        exec($cmd_thumb);
+        compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+        gzcompress($thumbs_dir.$filename."_thumb.png");
+    }
 }
 
 //reading out the duration of a clip to have a scrollbar...
 $fp = fopen($meta_dir.$filename.".txt","r");
 $data = fread($fp,filesize($meta_dir.$filename.".txt"));
+
+if($m != ""){
+    $m->set('data',$data);
+    $data = $m->get('data');
+}
+
 fclose($fp);
 preg_match("#Duration: (.+), start#",$data,$duration);
 $parsed = date_parse(trim($duration[1]));

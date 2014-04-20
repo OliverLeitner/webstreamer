@@ -60,4 +60,7 @@ $crtmpserverlog = "/var/log/crtmpserver/main.log";
 //this server holds your media files.
 $storageserver = "https://".$_SERVER['SERVER_NAME'];
 $storageport = "8000";
+
+//enable memcache support
+//$memcservers = array("127.0.0.1:11211");
 ?>

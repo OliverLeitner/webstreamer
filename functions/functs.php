@@ -1,6 +1,16 @@
 <?php
 /* collection of required functions */
 
+/* initializing memcache support */
+function init_memcache($servers=array(),$delimiter){
+    $m = new Memcached();
+    foreach($servers AS $server){
+        $serverdata = split($delimiter,$server);
+        $m->addServer($serverdata[0], $serverdata[1]);
+    }
+    return $m;
+}
+
 /* creating a clean title from the filelink */
 function cleanTitle($ending,$string,$replacer="/",$replacing="."){
 	$title = str_replace($ending,"",$string);

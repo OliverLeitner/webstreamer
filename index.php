@@ -31,6 +31,12 @@ include_once("functions/definitions.php"); //base definitions for images and fil
 // Get this folder and files name.
 ini_set("display_errors","Off");
 
+//check for and enable memcache if possible...
+$m = "";
+if(isset($memcservers) && $memcservers != ""){
+   $m = init_memcache($memcservers,":"); 
+}
+
 $this_script = basename(__FILE__);
 $this_folder = $_GET['dir'];
 $this_folder = str_replace("..", "", $this_folder);
@@ -115,16 +121,24 @@ if ($handle = opendir($this_folder))
 
 // Sort folder list.
 if($folder_list)
-	$folder_list = php_multisort($folder_list, $sort);
+    $folder_list = php_multisort($folder_list, $sort);
 // Sort file list.
 if($file_list)
-	$file_list = php_multisort($file_list, $sort);
+    $file_list = php_multisort($file_list, $sort);
 // Calculate the total folder size
 if($file_list && $folder_list)
 	$total_size = bytes_to_string($total_size, 2);
 
+if($m != ""){
+    $m->set('folder_list',$folder_list);
+    $m->set('file_list',$file_list);
+}
+
 //******************************** output definitions *************************************************************
 if($folder_list) {
+    if($m != ""){
+        $folder_list = $m->get('folder_list');
+    }
 	foreach($folder_list as $item) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
@@ -137,16 +151,25 @@ if($folder_list) {
 
 
 if($file_list){
+    if($m != ""){
+        $file_list = $m->get('file_list');
+    }
 	foreach($file_list as $item) {
 		//creating thumbnail for the player on player load
 		$filename = preg_replace("/ /","_",$item['name'].".".$item['ext']);
 		$dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
         $cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.$filename)."_thumb.png'";
         $out_duration_cmd = "avconv -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".escapeshellcmd($meta_dir.$filename).".txt'";
-		if(!file_exists($thumbs_dir.$filename."_thumb.png")){
-        	exec($cmd_thumb);
-			compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
-			gzcompress($thumbs_dir.$filename."_thumb.png");
+        if(!file_exists($thumbs_dir.$filename."_thumb.png")){
+            if($m != ""){
+                $m->set('cmd_thumb',exec($cmd_thumb));
+                $m->set('compress_image',compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60));
+                $m->set('gzcompress',gzcompress($thumbs_dir.$filename."_thumb.png"));
+            } else {
+                exec($cmd_thumb);
+                compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+                gzcompress($thumbs_dir.$filename."_thumb.png");
+            }
         }
 		if(!file_exists($meta_dir.$filename.".txt")){
 			exec($out_duration_cmd);
@@ -155,7 +178,7 @@ if($file_list){
 		$out_duration = str_replace(",","<br />",$out_duration);
 		$popup_link = 'popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
 		$listfiles .= '<tr class="file">
-			<td class="thumb" title="'.urlencode(substrwords($item["name"],20)).'"><span class="item_title">'.substrwords($item["name"],20).'</span><a title="'.urlencode(substrwords($item["name"],20)).'" href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img alt="'.urlencode(substrwords($item["name"],20)).'" src="'.$thumbs_dir.$filename.'_thumb.png" border="0" /></a></td>
+			<td class="thumb" title="'.urlencode(substrwords($item["name"],20)).'"><span class="item_title">'.substrwords($item["name"],20).'</span><a title="'.urlencode(substrwords($item["name"],20)).'" href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img alt="'.urlencode($item["name"]).'" src="'.$thumbs_dir.$filename.'_thumb.png" border="0" /></a></td>
 			<td class="name" id="'.$item['name'].'" title="'.urlencode(substrwords($item["name"],20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
 			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_startstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
 			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_stopstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
