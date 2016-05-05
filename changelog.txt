@@ -50,3 +50,10 @@ added multiple major security fixes, thanks to contributions by Eric Sesterhenn.
 
 webstreamer now resizes to your ipad/iphone/droid... using rudimentary css3 and viewport attributes
 also updated players a bit, improving html5 playback
+
+2.0 (we now run on php 7)
+
+php 7 support, actually just needed to change one function call to achieve this.
+correct subtitles handling, checks for a subtitle, if there is one, displays it.
+current version runs inside a lxc container in userspace, without problems.
+added info on system requirements into the README.md file.

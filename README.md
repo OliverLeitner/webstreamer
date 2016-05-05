@@ -1,5 +1,11 @@
 == Web Video Streamer ==
 
+System Requirements (highly depend on the number of paralell users you got visiting...):
+
+Minimum RAM: 64 Megabytes
+Minimum CPU Cores: 1
+Harddisk Space: ~700 Megabytes (this holds the base operating system, all required tools, the web interface and all caching folders) 
+
 Change (17.01.2014)
 IF YOU ARE RUNNING THIS IN PRODUCTION MAKE SURE THAT YOU UPDATE
 TO CURRENT VERSION, THERE HAVE BEEN MULTIPLE SECURITY ISSUES.
@@ -37,7 +43,6 @@ Mediafiles and webserver dont have to be on the same machine, same goes for the 
 (i.e. for really large deployments: nfs mount to the mediafiles mass-create the thumbs and metadata files 
 with a avconv bash script, and serve them via an nginx instance back into the webstreamer).
 
-
 usage:
 
 1. go to a directory with media files in it.
@@ -51,7 +56,6 @@ works with html5 in most cases, so you should be fine on your iPad.
 
 known bugs:
 
-1. better video quality, thats always a place to tweak things...
 2. no audio file support done by now, this is something im gonna add in the future...
    (audio is working fine from video files, just no mp3/ogg support as of now)
 3. some mpg files dont have good thumbnails generated.

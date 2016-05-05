@@ -5,7 +5,7 @@
 function init_memcache($servers=array(),$delimiter){
     $m = new Memcached();
     foreach($servers AS $server){
-        $serverdata = split($delimiter,$server);
+        $serverdata = explode($delimiter,$server);
         $m->addServer($serverdata[0], $serverdata[1]);
     }
     return $m;

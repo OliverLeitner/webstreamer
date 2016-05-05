@@ -7,6 +7,7 @@ ini_set("display_errors","on");
 include_once("../functions/functs.php");
 include_once("../config.php");
 
+$init='nice -n19';
 $file=$_GET['file'];
 $name=$_GET['name'];
 $uid=md5($_SERVER['REMOTE_ADDR'].$name); //multi user stuff...
@@ -24,12 +25,17 @@ $audio = "-acodec libmp3lame -ab 8k -ar 22050 -aq 24 -ac 1"; //-ar 11025
 //$video="-vcodec flv -b:v 100k -s vga -strict experimental -g 10 -me_method zero";
 $video="-vcodec libx264 -pass 1 -b:v 200k -s vga -strict experimental -g 20 -me_method zero";
 
-$output = "-f flv -r 30 -metadata streamName=".$uid;
+$output = "-f flv -r 30 -metadata streamName=".$uid." -metadata fullPath=".$file;
 
-$subtitles = "-c:s copy";
+$check_subtitle = shell_exec("avconv -i ".escapeshellarg($file)." 2>&1 | grep Subtitle");
+if($check_subtitle != ""){
+	$subtitles = "-vf subtitles=".$file;
+} else {
+	$subtitles = "";
+}
 
 $check_cmd = "ps auxf |grep {$uid} |awk '{ print $13}' |grep avconv";
-$checked = exec($check_cmd);
+$checked = shell_exec($check_cmd);
 
 //only start encoder if its not already running...
 if($checked == ""){
