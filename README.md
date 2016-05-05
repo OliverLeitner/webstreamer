@@ -3,7 +3,9 @@
 System Requirements (highly depend on the number of paralell users you got visiting...):
 
 Minimum RAM: 64 Megabytes
+
 Minimum CPU Cores: 1
+
 Harddisk Space: ~700 Megabytes (this holds the base operating system, all required tools, the web interface and all caching folders)
 
 Change (17.01.2014)
