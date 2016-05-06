@@ -6,7 +6,7 @@ System Requirements (highly depend on the number of paralell users you got visit
 
 **Minimum CPU Cores:** 1
 
-**Harddisk Space:** ~700 Megabytes (this holds the base operating system, all required tools, the web interface and all caching folders)
+**Harddisk Space:** ~700 Megabytes (this holds the base operating system, all required tools, the web interface and all caching folders with hundreds of of files of cached content info)
 
 Change (17.01.2014)
 IF YOU ARE RUNNING THIS IN PRODUCTION MAKE SURE THAT YOU UPDATE
