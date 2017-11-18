@@ -2,28 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<meta http-equiv="Cache-Control" content="no-cache" />
-<meta http-equiv="Cache-Control" content="max-age=120" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="robots" content="noindex, nofollow" />
-<meta http-equiv="expires" content="Sat, 03 Dec 2011 00:00:00 GMT" />
-<meta name="handheldfriendly" />
 <meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
-<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>Media Streaming Archive</title>
 <link rel="stylesheet" href="###main_style###" />
 <script src="###js_dir###custom.js"></script>
-<script type="text/javascript">
-<!--//
-function popitup(url) {
-	newwindow=window.open(url,'name','height=###height###,width=###width###');
-	if (window.focus) { newwindow.focus() }
-	return false;
-}
-//-->
-</script>
 </head>
 <body>
 <!-- menu start -->
@@ -39,20 +23,20 @@ function popitup(url) {
 <!-- menu end -->
 <!-- main start -->
 <div id="right">
-<table cellpadding="0" cellspacing="1">
-	<thead>
-		<tr>
-			<td colspan="4">Directory listing for ###folder###</td>
-		</tr>
-	</thead>
-	<tbody>
+<table>
+<thead><tr><td>Directory listing for ###folder###</td></tr></thead>
+<tbody>
 <!-- folders -->
-	###list_folders###
+###list_folders###
 <!-- /folders -->
+</tbody>
+</table>
+<table>
+<tbody>
 <!-- files -->
-	###list_files###
+###list_files###
 <!-- /files -->
-	</tbody>
+</tbody>
 </table>
 </div>
 <!-- main end -->

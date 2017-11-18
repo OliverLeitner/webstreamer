@@ -70,8 +70,7 @@ phased out php 5.x only code, now we fully support 7.x
 new default player is clappr (https://cdn.jsdelivr.net/clappr/latest/clappr.min.js) (apache license), just git submodule init
 and youll have it.
 
-to have rtmp playback with clappr, i am using clappr-rtmp-plugin (https://github.com/video-dev/clappr-rtmp-plugin) (apache license),
-it will be also automatically fetched when you do the above mentoined git submodule init.
+to have rtmp playback with clappr, i am using clappr-rtmp-plugin (https://github.com/video-dev/clappr-rtmp-plugin) (apache license), it will be also automatically fetched when you do the above mentoined git submodule init.
 
 improved mobile style, scrolling and clicking the menu will now be alot easier, even if you hold your iphone "like a phone".
 
@@ -79,4 +78,8 @@ improved encoding to ensure a relatively high quality if you do rtmp while keepi
 
 changed the favicon to a creative commons one.
 
-added submodule initialisation script init.sh (found on the interwebs...)
+1.3b (gotta catch em all;-)
+
+php notices are fixed
+html5 validates again (removed some old meta's)
+clappr player template is now using $js_dir, to have the config.php setting apply

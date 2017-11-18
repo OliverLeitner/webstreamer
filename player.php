@@ -14,7 +14,6 @@ if(isset($memcservers) && $memcservers != ""){
 $name = addslashes(ltrim(urldecode(str_replace("..", "", $_GET['name'])),"/"));
 $type = $_GET['type'];
 $title = urldecode($_GET['name']);
-//$file = addslashes(urldecode($_GET['file']));
 //for multiuser support we use client ip and chosen file
 $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
@@ -69,7 +68,6 @@ if($name_cmd == $uid){
 	$short_src = $name_cmd;
 	$default_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
 
-	//$tag .= "<source src=\"".htmlentities($long_src)."\" type=\"".htmlentities($type)."\" />";
 	$tag .= "<source src=\"".htmlentities($long_src)."\"/>";
 	/*	load the desired player	*/
 	if($player == "clappr" || !isset($player)){

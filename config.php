@@ -18,11 +18,11 @@ options:
 	jwplayer (WORKING!)
 	clappr (WORKING!) DEFAULT
 
-beware: pseudo playback almost always only support flv,m4v,mp4
+beware: pseudo playback almost always only support ogm,mkv,m4v,mp4
 it also doesnt work with slow bandwith connections (LAN only, if no fast server avail.)
 if youre using an iPad, iPhone, Android, only the pseudo streaming options might work...
 */
-$player = "jwplayer";
+$player = "clappr";
 
 //jwplayer registration key for stats...
 //leave blank if you dont have one...
@@ -40,11 +40,11 @@ $include_dirs = array("/path1","/path2","/path3","/path4","/path5");
 $include_files = array("avi","flv","m4v","mp4","ogm","mpg","mpeg","mkv","wmv","mov");
 
 //security setting jails media indexing to media storage dir...
-$mediaroot = "/mediarootdir";
+$mediaroot = "/media";
 
 //the rtmp media server domain to look up
 //!IMPORTANT! currently we only support crtmpserver
-$crtmpserver = '192.168.1.1'; //the ip address of the machine running the rtmp server
+$crtmpserver = 'crtmp.server.ip'; //the ip address of the machine running the rtmp server
 $crtmp_out_port = '1935'; //port that connects us to the crtmpserver, useful for rtmps and rtmpt
 $crtmp_in_port = '6666'; //port used for streaming media content to the crtmp server
 //where is the main.log of the crtmpserver located

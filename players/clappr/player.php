@@ -1,14 +1,15 @@
 <?php
-ini_set("display_errors","Off");
+//i like to have some error output
+//where needed
+ini_set("display_errors","On");
+error_reporting(E_ALL);
 
-/* projekktor definitions */
+/* clappr definitions */
 $quotes = array("'", '"');
-//$style = "<link rel=\"stylesheet\" href=\"".$js_dir."projekktor/themes/maccaco/projekktor.style.css\" type=\"text/css\" media=\"screen\" />";
 $style = "";
-$headscript = "<script type=\"text/javascript\" src=\"/scripts/clappr/dist/clappr.min.js\"></script>";
-$headscript .= "<script type=\"text/javascript\" src=\"/scripts/clappr-rtmp-plugin/dist/rtmp.min.js\"></script>";
-$contentscript = "<script>
-//$(document).ready(function(){
+$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."clappr/dist/clappr.min.js\"></script>\n";
+$headscript .= "<script type=\"text/javascript\" src=\"".$js_dir."clappr-rtmp-plugin/dist/rtmp.min.js\"></script>";
+$contentscript = "<script type=\"text/javascript\">
 var player = new Clappr.Player({
     source: '".htmlentities($long_src)."',
     parentId: '#container1',
@@ -16,7 +17,7 @@ var player = new Clappr.Player({
     duration: ".$seconds.",
     plugins: {'playback': [RTMP]},
     rtmpConfig: {
-        swfPath: '/scripts/clappr-rtmp-plugin/dist/assets/RTMP.swf',
+        swfPath: '".$js_dir."clappr-rtmp-plugin/dist/assets/RTMP.swf',
         scaling:'stretch',
         playbackType: 'live',
         bufferTime: 1,
@@ -40,5 +41,4 @@ var player = new Clappr.Player({
         }
     },
 });
-//});
 </script>";

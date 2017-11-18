@@ -1,23 +1,23 @@
 <?php
 // Set sorting properties.
 $sort = array(
-	array('key'=>'lname',	'sort'=>'asc'), // ... this sets the initial sort "column" and order ...
-	array('key'=>'size',	'sort'=>'asc') // ... for items with the same initial sort value, sort this way.
-);
+		array('key'=>'lname',	'sort'=>'asc'), // ... this sets the initial sort "column" and order ...
+		array('key'=>'size',	'sort'=>'asc') // ... for items with the same initial sort value, sort this way.
+	     );
 
 $filetype = array(
-	'text'		=> array('doc', 'docx', 'txt', 'rtf', 'odf', 'text', 'nfo'),
-	'audio'		=> array('aac', 'mp3', 'wav', 'wma', 'm4p', 'ogg'),
-	'graphic'	=> array('ai', 'bmp', 'eps', 'gif', 'ico', 'jpg', 'jpeg', 'png', 'psd', 'psp', 'raw', 'tga', 'tif', 'tiff'),
-	'video'		=> array('mv4', 'bup', 'mkv', 'ifo', 'flv', 'vob', '3g2', 'bik', 'xvid', 'divx', 'wmv', 'avi', '3gp', 'mp4', 'mov', '3gpp', '3gp2', 'swf', 'm4v', 'ogm', 'mpg', 'mpeg', 'divx'),
-	'archive'	=> array('7z', 'dmg', 'rar', 'sit', 'zip', 'bzip', 'gz', 'tar'),
-	'app'		=> array('exe', 'msi', 'mse', 'bat'),
-	'script'	=> array('js', 'html', 'htm', 'xhtml', 'jsp', 'asp', 'aspx', 'php', 'xml', 'css')
-);
+		'text'		=> array('doc', 'docx', 'txt', 'rtf', 'odf', 'text', 'nfo'),
+		'audio'		=> array('aac', 'mp3', 'wav', 'wma', 'm4p', 'ogg'),
+		'graphic'	=> array('ai', 'bmp', 'eps', 'gif', 'ico', 'jpg', 'jpeg', 'png', 'psd', 'psp', 'raw', 'tga', 'tif', 'tiff'),
+		'video'		=> array('mv4', 'bup', 'mkv', 'ifo', 'flv', 'vob', '3g2', 'bik', 'xvid', 'divx', 'wmv', 'avi', '3gp', 'mp4', 'mov', '3gpp', '3gp2', 'swf', 'm4v', 'ogm', 'mpg', 'mpeg', 'divx'),
+		'archive'	=> array('7z', 'dmg', 'rar', 'sit', 'zip', 'bzip', 'gz', 'tar'),
+		'app'		=> array('exe', 'msi', 'mse', 'bat'),
+		'script'	=> array('js', 'html', 'htm', 'xhtml', 'jsp', 'asp', 'aspx', 'php', 'xml', 'css')
+		);
 
 //list of mime types.
 $typesArray = array('avi'=>'video/mp4','mpg'=>'video/flash','mp4'=>'video/mp4','m4v'=>'video/mp4','mkv'=>'video/mp4',
-	'ogm'=>'video/ogg','wmv'=>'video/mp4','flv'=>'video/mp4','webm'=>'video/webm');
+		'ogm'=>'video/ogg','wmv'=>'video/mp4','flv'=>'video/mp4','webm'=>'video/webm');
 
 /**********************************************************************************************************************************/
 /*********************************************************************************************************************[ IMAGES ]***/
