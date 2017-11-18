@@ -8,4 +8,3 @@ $file=escapeshellcmd($_GET['file']);
 $name=escapeshellcmd(md5($_SERVER['REMOTE_ADDR'].$_GET['name']));
 
 passthru("kill -9 $(ps aux | grep '".$name."' |awk '{print $2}')",$returnval);
-?>

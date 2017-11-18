@@ -1,0 +1,32 @@
+@import "bourbon";
+
+.player-poster[data-poster] {
+  @include display(flex);
+  @include justify-content(center);
+  @include align-items(center);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 998;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  &.clickable { cursor: pointer; }
+  &:hover .play-wrapper[data-poster] { opacity: 1; }
+
+  .play-wrapper[data-poster] {
+    width: 100%;
+    height: 25%;
+    margin: 0 auto;
+    opacity: 0.75;
+    @include transition(opacity 0.1s ease);
+    svg {
+      height: 100%;
+      path { fill: #fff; }
+    }
+  }
+}

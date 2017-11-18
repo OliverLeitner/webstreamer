@@ -1,0 +1,6 @@
+[submodule "scripts/clappr"]
+	path = scripts/clappr
+	url = https://github.com/clappr/clappr.git
+[submodule "scripts/clappr-rtmp-plugin"]
+	path = scripts/clappr-rtmp-plugin
+	url = https://github.com/video-dev/clappr-rtmp-plugin.git

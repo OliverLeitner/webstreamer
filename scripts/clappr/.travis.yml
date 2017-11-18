@@ -1,0 +1,23 @@
+language: node_js
+sudo: false
+node_js:
+  - "7"
+
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+addons:
+  firefox: "latest"
+
+env:
+  - COVERALLS_SERVICE_NAME="travis-ci" COVERALLS_REPO_TOKEN="sj8SOxUBGaVeFGSY9ryrC2eTFpVjCPHJl" CHROME_BIN="chromium-browser"
+
+notifications:
+  email:
+    - videos5@corp.globo.com
+  slack: globo:F1iVlyrzR4iX8OS7h8fwMcqx
+
+before_script: "npm run check_code_style && npm run lint"
+
+after_script: "cat coverage/C*/lcov.info | ./node_modules/coveralls/bin/coveralls.js"

@@ -46,4 +46,3 @@ if(isset($_GET['image']))
 	// Exit this script when the correct image has been served
 	exit();
 }
-?>

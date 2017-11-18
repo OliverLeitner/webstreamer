@@ -164,4 +164,3 @@ function substrwords($text,$maxchar,$end='...'){
     }   
     return $output.$end;
 }
-?>

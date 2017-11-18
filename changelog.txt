@@ -51,9 +51,29 @@ added multiple major security fixes, thanks to contributions by Eric Sesterhenn.
 webstreamer now resizes to your ipad/iphone/droid... using rudimentary css3 and viewport attributes
 also updated players a bit, improving html5 playback
 
-2.0 (we now run on php 7)
+1.3 (reasonable patchday)
 
-php 7 support, actually just needed to change one function call to achieve this.
-correct subtitles handling, checks for a subtitle, if there is one, displays it.
-current version runs inside a lxc container in userspace, without problems.
-added info on system requirements into the README.md file.
+modified config.php, changed variables:
+
+a.) $crtmpport got phased out, we now have $crtmp_out_port for the port in the web player and $crtmp_in_port 
+for where the encoded stream gets pushed to.
+b.) $storageserver is now written without http:// in front of it, because we use it in multiple locations
+and multiple protocols.
+c.) $jquery... parameter is no more, see reason below.
+d.) list of available options for $player has changed, see reason below.
+
+phased out flowplayer (outdated flowplayer version, new one does no longer support rtmp)
+phased out projekktor (projekt no longer maintained, jquery current support broken)
+phased out jquery (cause i dont need it, really)
+phased out php 5.x only code, now we fully support 7.x
+
+new default player is clappr (https://cdn.jsdelivr.net/clappr/latest/clappr.min.js) (apache license), just git submodule init
+and youll have it.
+
+to have rtmp playback with clappr, i am using clappr-rtmp-plugin (https://github.com/video-dev/clappr-rtmp-plugin) (apache license), it will be also automatically fetched when you do the above mentoined git submodule init.
+
+improved mobile style, scrolling and clicking the menu will now be alot easier, even if you hold your iphone "like a phone".
+
+improved encoding to ensure a relatively high quality if you do rtmp while keeping the bandwith down.
+
+changed the favicon to a creative commons one.

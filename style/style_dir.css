@@ -2,244 +2,285 @@
 
 /* start orig. styles from index.php */
 body{
-    font-family: "Lucida Grande",Calibri,Arial;
-    font-size: 9pt;
-    color: #333;
-    background: #f8f8f8;
+	font-family: "Lucida Grande",Calibri,Arial;
+	font-size: 9pt;
+	color: #333;
+	background: #f8f8f8;
 }
 
 a{
-    color: #b00;
-    font-size: 11pt;
-    font-weight: bold;
-    text-decoration: none;
+	color: #b00;
+	font-size: 11pt;
+	font-weight: bold;
+	text-decoration: none;
 }
 
 a:hover{
-    color: #000;
+	color: #000;
 }
 
 img{
-    vertical-align: bottom;
-    padding: 0 3px 0 0;
+	vertical-align: bottom;
+	padding: 0 3px 0 0;
 }
 
 table td{
-    padding: 5px;
+	padding: 5px;
 }
 
 thead td{
-    padding-left: 0;
-    font-family: "Trebuchet MS";
-    font-size: 11pt;
-    font-weight: bold;
+	padding-left: 0;
+	font-family: "Trebuchet MS";
+	font-size: 11pt;
+	font-weight: bold;
 }
 
 tbody .folder td{
-    border: solid 1px #f8f8f8;
+	border: solid 1px #f8f8f8;
 }
 
 tbody .file td{
-    background: #fff;
-    border: solid 1px #ddd;
+	background: #fff;
+	border: solid 1px #ddd;
 }
 
 tbody tr.file td.name a {
-    color:black !important;
-    font-size:11pt;
+	color:black !important;
+	font-size:11pt;
 }
 
 tbody tr.file td.name {
-    float:left;
-    width:400px;
-    overflow:hidden;
-    height:150px;
-    font-size:14pt;
+	float:left;
+	width:400px;
+	overflow:hidden;
+	height:150px;
+	font-size:14pt;
 }
 
 tbody tr.file td.name img {
-    display:none;
-    visibility:hidden;
+	display:none;
+	visibility:hidden;
 }
 
-tbody .file td.size,
-
-tbody .file td.time{
-    white-space: nowrap;
-    width: 1%;
-    padding: 5px 10px;
+tbody .file td.size,tbody .file td.time {
+	white-space: nowrap;
+	width: 1%;
+	padding: 5px 10px;
 }
 
 tbody .file td.size span{
-    color: #999;
-    font-size: 8pt;
+	color: #999;
+	font-size: 8pt;
 }
 
 tbody .file td.time{
-    color: #555;
+	color: #555;
 }
 
 tfoot td{
-    padding: 5px 0;
-    color: #777;
-    font-size: 8pt;
-    background: #f8f8f8;
-    border-color: #f8f8f8;
+	padding: 5px 0;
+	color: #777;
+	font-size: 8pt;
+	background: #f8f8f8;
+	border-color: #f8f8f8;
 }
 
 tfoot td.copy{
-    text-align: right;
-    white-space: nowrap;
+	text-align: right;
+	white-space: nowrap;
 }
 
 tfoot td.cc{
-    padding: 40px;
-    text-align: center;
+	padding: 40px;
+	text-align: center;
 }
 
 tfoot td.cc img{
-    padding: 0;
-    border: none;
+	padding: 0;
+	border: none;
 }
 
 /* end orig. styles from index.php */
 
 li {
-    top:0;
-    left:0;
-    margin-top:10px;
+	top:0;
+	left:0;
+	margin-top:10px;
 }
 
 ul {
-    position:fixed;
-    top:30px;
-    left:0;
-    width:200px;
+	position:fixed;
+	top:30px;
+	left:0;
+	width:200px;
 }
 
 #container1 {
-    width:660px;
+	width:660px;
 }
 
 #title {
-    clear:both;
-    float:left;
+	clear:both;
+	float:left;
 }
 
 #left {
-    position:relative;
-    left:20px;
-    margin:0px;
-    padding:0px;
-    width:200px;
-    min-height:200px;
-    float:left;
+	position:relative;
+	left:20px;
+	margin:0px;
+	padding:0px;
+	width:200px;
+	min-height:200px;
+	float:left;
 }
 
 #left h2 {
-    position:fixed;
-    top:0;
-    left:0;
-    width:200px;
+	position:fixed;
+	top:0;
+	left:0;
+	width:200px;
 }
 
 #right {
-    position:relative;
-    margin:0px;
-    padding:0px;
-    float:left;
-    width:auto;
+	position:relative;
+	margin:0px;
+	padding:0px;
+	float:left;
+	width:auto;
 }
 
 .item_title {
-    position:absolute;
-    height:0;
-    width:0;
-    overflow:hidden;
-    display:none;
+	position:absolute;
+	height:0;
+	width:0;
+	overflow:hidden;
+	display:none;
 }
 
 #folder_name {
-    display:none;
+	display:none;
+}
+
+table {
+	max-width:600px;
+}
+
+td.name {
+	height:100%;
+}
+
+thead td {
+	word-wrap:break-word;
 }
 
 /*  mobile magic    */
 @media screen and (max-width : 768px) {
-    body {
-        font-size:16pt;
-        /* hiding the horizontal scrollbar fragment from resizing... */
-        overflow-x:hidden;
-    }
-    table thead, table tfoot {
-        display: none;
-    }
-    #left {
-        position:relative;
-        clear:both;
-        float:left;
-        width:400px;
-    }
-    #left h2 {
-        position:relative;
-        clear:both;
-        float:left;
-        width:400px;
-        font-size:1em;
-    }
-    #right {
-        clear:both;
-        float:left;
-    }
-    ul {
-        top:60px;
-    }
-    #right table {
-        margin:0px 0px;
-    }
-    #right table tr.file td.name,#right table tr td.size {
-        display:none;
-    }
-    #right table tr.file td.name img {
-        display:none;
-    }
-    #right table tr.file td.start,#right table tr td.stop {
-        float:left;
-        width:100px;
-        padding:9px;
-    }
-    #right table tr.file td.start a,#right table tr td.stop a {
-        font-size:2em;
-    }
-    td.thumb {
-        clear:both;
-        float:left;
-        width:320px;
-    }
-    tr.file {
-        clear:both;
-        float:left;
-        width:300px;
-        text-align:center;
-        padding-bottom:10px;
-    }
-   .item_title {
-        position:absolute;
-        display:inline;
-        overflow:hidden;
-        padding-top:10px;
-        padding-left:10px;
-        color:#F30B0B;
-        font-weight:bold;
-        width:300px;
-        height:20px;
-    }
-    #folder_name {
-        display:block;
-        font-weight:bold;
-        color:#000;
-    }
-    /* this is the flash player container */
-    #container1 {
-        width:100%;
-    }
+	body {
+		font-size:16pt;
+		/* hiding the horizontal scrollbar fragment from resizing... */
+		overflow-x:hidden;
+	}
+	table thead, table tfoot {
+		display: none;
+	}
+
+	#left {
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		margin:0;
+		padding:0;
+		min-height:unset;
+		height:135px;
+		background-color:#000;
+		z-index:100;
+		text-align:center;
+	}
+
+	#left h2 {
+		color:white;
+		font-size:1em;
+		width:100%;
+		margin-top:20px;
+		margin-left:10px;
+	}
+
+	#left ul {
+		text-align:left;
+		margin-left:10px;
+	}
+
+	#left ul li a:hover {
+		color:#fff;
+	}
+
+	td.start,td.stop {
+		font-size:0.8em;
+	}
+
+	#right table {
+		margin:0px 0px;
+		margin-top:140px;
+	}
+
+	#right table tr.file td.name,#right table tr td.size {
+		display:none;
+	}
+
+	#right table tr.file td.name img {
+		display:none;
+	}
+
+	#right table tr.file td.start,#right table tr td.stop {
+		float:left;
+		width:100px;
+		padding:9px;
+	}
+
+	#right table tr.file td.start a,#right table tr td.stop a {
+		font-size:2em;
+	}
+
+	td.thumb {
+		margin:0;
+		padding:0;
+	}
+
+	td.thumb img {
+		width:100%;
+	}
+
+	tr.file {
+		clear:both;
+		float:left;
+      		text-align:center;
+		margin:0;
+		padding:0;
+		margin-bottom:20px;
+	}
+
+	.item_title {
+		position:absolute;
+		display:inline;
+		overflow:hidden;
+		padding-top:10px;
+		padding-left:10px;
+		color:#F30B0B;
+		font-weight:bold;
+		width:300px;
+		height:20px;
+		left:10px;
+	}
+
+	#folder_name {
+		display:block;
+		font-weight:bold;
+		color:#000;
+	}
+
+	/* this is the flash player container */
+	#container1 {
+		width:100%;
+	}
 }

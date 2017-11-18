@@ -143,7 +143,7 @@ if($folder_list) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
 			$listfolders .= '<tr class="folder">
-				<td colspan="3" class="name" title="'.urlencode(substrwords($item["name"],50)).'"><img src="images/folder.png" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item["name"]).'">'.urlencode($item['name']).'</a></td>
+				<td colspan="3" class="name" title="'.urlencode(substrwords($item["name"],50)).'"><img src="images/Folder_open_trans.gif" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item["name"]).'">'.urlencode($item['name']).'</a></td>
 			</tr>';
 		}
 	}
@@ -176,17 +176,17 @@ if($file_list){
 		}
 		$out_duration = exec("cat ".escapeshellcmd($meta_dir.$filename).".txt");
 		$out_duration = str_replace(",","<br />",$out_duration);
-		$popup_link = 'popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.mktime().'\')';
+		//$popup_link = 'popitup(\'player.php?name='.$item['dir'].$item['name'].'.'.$item['ext'].'&amp;file='.$item['name'].'.'.$item['ext'].'&amp;type='.$item['type'].'&t='.rand().'\')';
+		$popup_link = "/player.php?name=".$item['dir'].$item['name'].".".$item['ext']."&amp;file=".$item['name'].".".$item['ext']."&amp;type=".$item['type']."&t=".rand();
 		$listfiles .= '<tr class="file">
-			<td class="thumb" title="'.urlencode(substrwords($item["name"],20)).'"><span class="item_title">'.substrwords($item["name"],20).'</span><a title="'.urlencode(substrwords($item["name"],20)).'" href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'"><img alt="'.urlencode($item["name"]).'" src="'.$thumbs_dir.$filename.'_thumb.png" border="0" /></a></td>
-			<td class="name" id="'.$item['name'].'" title="'.urlencode(substrwords($item["name"],20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="#'.urlencode($item['name']).'" onclick="'.$popup_link.'">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
-			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_startstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
-			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_stopstream(\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
+			<td class="thumb" title="'.urlencode(substrwords($item["name"],20)).'"><span class="item_title">'.substrwords($item["name"],20).'</span><a title="'.urlencode(substrwords($item["name"],20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.urlencode($item["name"]).'" src="'.$thumbs_dir.$filename.'_thumb.png" border="0" /></a></td>
+			<td class="name" id="'.$item['name'].'" title="'.urlencode(substrwords($item["name"],20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td>
+			<td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td>
+			<td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td>
 			<td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td>
 		</tr>';
 	}
 }
 
-$body = doIndex($style_main,$js_dir,$jquery,($height+80),$width,$this_folder,$listfolders,$listfiles);
+$body = doIndex($style_main,$js_dir,($height+80),$width,$this_folder,$listfolders,$listfiles);
 echo $body;
-?>

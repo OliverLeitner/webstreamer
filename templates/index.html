@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="utf-8" />
 <meta http-equiv="Cache-Control" content="no-cache" />
 <meta http-equiv="Cache-Control" content="max-age=120" />
@@ -13,12 +12,8 @@
 <meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
 <meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
 <title>Media Streaming Archive</title>
-
 <link rel="stylesheet" href="###main_style###" />
-
-<script src="###js_dir######jquery###"></script>
 <script src="###js_dir###custom.js"></script>
 <script type="text/javascript">
 <!--//
@@ -30,21 +25,18 @@ function popitup(url) {
 //-->
 </script>
 </head>
-
 <body>
-
 <!-- menu start -->
 <div id="left">
 <h2>Media Streaming Menu</h2>
 <ul>
 	<li><a href="index.php?dir=/">Home Directory</a></li>
 	<li><a href="javascript:history.back();">Go Back!</a></li>
-	<!--li><a href="#"  onclick="javascript:ajax_stopstream('avconv','avconv');">kill all encodes</a></li-->
+	<!--li><a href="#"  onclick="javascript:ajax_cmd('stop','avconv','avconv');">kill all encodes</a></li-->
 </ul>
 <div id="folder_name">###folder###</div>
 </div>
 <!-- menu end -->
-
 <!-- main start -->
 <div id="right">
 <table cellpadding="0" cellspacing="1">
@@ -64,6 +56,5 @@ function popitup(url) {
 </table>
 </div>
 <!-- main end -->
-
 </body>
 </html>

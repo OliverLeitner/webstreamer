@@ -1,11 +1,24 @@
 //start the video stream to rtmp
-function ajax_startstream(file,name){
-	$.get("cmd/start.php", { file: file, name: name } );
-	return true;
+function ajax_get(url){
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+
+	request.onreadystatechange = function() {
+		if (this.readyState === 4) {
+			if (this.status >= 200 && this.status < 400) {
+				// Success!
+				var data = JSON.parse(this.responseText);
+			} else {
+				console.log("get request couldnt be sent!");
+			}
+		}
+	};
+
+	request.send();
+	request = null;
 }
 
-//stop the video stream to rtmp
-function ajax_stopstream(file,name){
-        $.get("cmd/stop.php", { file: file, name: name } );
-        return true;
+function ajax_cmd(cmd,file,name){
+	ajax_get("cmd/"+cmd+".php?file="+file+"&name="+name);
+	return true;
 }
