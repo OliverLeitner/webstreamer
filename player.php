@@ -1,5 +1,6 @@
 <?php
-ini_set("display_errors","Off");
+ini_set("display_errors","On");
+error_reporting(E_ALL);
 include("functions/functs.php");
 include("templates/player.php");
 include("config.php");
@@ -21,22 +22,8 @@ $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 $cmd = "ps auxf |grep {$uid} |awk '{ print $13 }' |grep avconv";
 $name_cmd = exec($cmd);
 
-//creating thumbnail for the player on player load
-$filename = preg_replace("/ /","_",$_GET["file"]);
-$filename = str_replace("..", "", $filename);
-$dirname = dirname(dirname(__FILE__)."/".$name);
-$cmd_thumb = "avconv -ss 00:3:00 -t 1 -i '/".escapeshellcmd($name)."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.$filename)."_thumb.png'";
-if(!file_exists($thumbs_dir.$filename."_thumb.png")){
-	if($m != ""){
-		$m->set('cmd_thumb',exec($cmd_thumb));
-		$m->set('compress_image',compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60));
-		$m->set('gzcompress',gzcompress($thumbs_dir.$filename."_thumb.png"));
-	} else {
-		exec($cmd_thumb);
-		compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
-		gzcompress($thumbs_dir.$filename."_thumb.png");
-	}
-}
+//reading the existing thumbnail for the file...
+$filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",current(explode(".",$_GET['file'])));
 
 //reading out the duration of a clip to have a scrollbar...
 $fp = fopen($meta_dir.$filename.".txt","r");
@@ -60,6 +47,9 @@ if($name_cmd == ""){
 }
 
 /* global vars possible to set... */
+$style = "";
+$headscript = "";
+$contentscript = "";
 $tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback\" data-engine=\"flash\"><video id=\"container1\" class=\"player projekktor\" poster=\"".htmlentities($thumbs_dir.$filename)."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".$height."\" title=\"".htmlentities($title)."\" controls>";
 
 /* global definitions for all other players but flowplayer */
