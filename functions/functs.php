@@ -25,6 +25,7 @@ function cleanTitle($ending,$string,$replacer="/",$replacing="."){
  */
 function php_multisort($data,$keys)
 {
+	$cols = array();
 	foreach ($data as $key => $row)
 	{
 		foreach ($keys as $k)
@@ -33,20 +34,7 @@ function php_multisort($data,$keys)
 		}
 	}
 	$idkeys = array_keys($data);
-	$i=0;
-	$sort = '';
-	foreach ($keys as $k)
-	{
-		if($i>0){$sort.=',';}
-		$sort.='$cols['.$k['key'].']';
-		if(isset($k['sort'])){$sort.=',SORT_'.strtoupper($k['sort']);}
-		if(isset($k['type'])){$sort.=',SORT_'.strtoupper($k['type']);}
-		$i++;
-	}
-	$sort .= ',$idkeys';
-	$sort = 'array_multisort('.$sort.');';
-	//why?
-	//eval($sort);
+	array_multisort($cols['lname'],SORT_ASC,$cols['size'],SORT_ASC,$idkeys);
 	foreach($idkeys as $idkey)
 	{
 		$result[$idkey]=$data[$idkey];

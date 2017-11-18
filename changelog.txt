@@ -88,3 +88,4 @@ clappr player template is now using $js_dir, to have the config.php setting appl
 
 mouseover naming fixed for non conventional filenames.
 if a media file cannot be played anyways due to special characters, its also not showing up anymore.
+redone the sorting algo, brought it up par.
