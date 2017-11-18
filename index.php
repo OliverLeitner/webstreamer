@@ -105,7 +105,7 @@ if ($handle = opendir($this_folder))
 			}
 
 			// Add files to the file list...
-			if(is_file($item['dir'].$item['name'].".".$item['ext']))
+			if(is_file($item['dir'].$item['name'].".".$item['ext']) && !preg_match('/[^a-zA-Z0-9\_\-\.]+/', $item['name'], $matches))
 			{
 				//filter out all files we do not want to show...
 				if(in_array($item['ext'],$filetype['video']))
@@ -159,7 +159,7 @@ if($folder_list) {
 	foreach($folder_list as $item) {
 		$has_files = dirEmpty($item["dir"].$item["name"],$filetype);
 		if($has_files == TRUE){
-			$listfolders .= trim('<tr class="folder"><td class="name" title="'.urlencode(substrwords($item["name"],50)).'"><img src="images/Folder_open_trans.gif" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item["name"]).'">'.urlencode($item['name']).'</a></td></tr>');
+			$listfolders .= trim('<tr class="folder"><td class="name" title="'.urlencode($item['name']).'"><img src="images/Folder_open_trans.gif" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item['name']).'">'.urlencode($item['name']).'</a></td></tr>');
 		}
 	}
 }
@@ -171,19 +171,26 @@ if($file_list){
 	}
 	foreach($file_list as $item) {
 		//creating thumbnail for the player on player load
-		$filename = preg_replace("/ /","_",$item['name'].".".$item['ext']);
+		$filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",$item['name']);
 		$dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
 		$cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.$filename)."_thumb.png'";
 		$out_duration_cmd = "avconv -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".escapeshellcmd($meta_dir.$filename).".txt'";
 		if(!file_exists($thumbs_dir.$filename."_thumb.png")){
 			if($m != ""){
 				$m->set('cmd_thumb',exec($cmd_thumb));
-				$m->set('compress_image',compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60));
-				$m->set('gzcompress',gzcompress($thumbs_dir.$filename."_thumb.png"));
+				$compressed_image = compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+				if($compressed_image != false)
+				{
+					$m->set('compress_image',$compressed_image);
+					$m->set('gzcompress',gzcompress($thumbs_dir.$filename."_thumb.png"));
+				}
 			} else {
 				exec($cmd_thumb);
-				compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
-				gzcompress($thumbs_dir.$filename."_thumb.png");
+				$compressed_image = compress_image($thumbs_dir.$filename."_thumb.png", $thumbs_dir.$filename."_thumb.png", 60);
+				if($compressed_image != false)
+				{
+					gzcompress($thumbs_dir.$filename."_thumb.png");
+				}
 			}
 		}
 		if(!file_exists($meta_dir.$filename.".txt")){
@@ -192,7 +199,7 @@ if($file_list){
 		$out_duration = exec("cat ".escapeshellcmd($meta_dir.$filename).".txt");
 		$out_duration = str_replace(",","<br />",$out_duration);
 		$popup_link = "/player.php?name=".$item['dir'].$item['name'].".".$item['ext']."&amp;file=".$item['name'].".".$item['ext']."&amp;type=".$item['type']."&t=".rand();
-		$listfiles .= trim('<tr class="file"><td class="thumb" title="'.urlencode(substrwords($item["name"],20)).'"><span class="item_title">'.substrwords($item["name"],20).'</span><a title="'.urlencode(substrwords($item["name"],20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.urlencode($item["name"]).'" src="'.$thumbs_dir.$filename.'_thumb.png" /></a></td><td class="name" id="'.$item['name'].'" title="'.urlencode(substrwords($item["name"],20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td></tr>');
+		$listfiles .= trim('<tr class="file"><td class="thumb" title="'.urlencode(substrwords($filename,20)).'"><span class="item_title">'.substrwords($filename,20).'</span><a title="'.urlencode(substrwords($filename,20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.urlencode(substrwords($filename,20)).'" src="'.$thumbs_dir.$filename.'_thumb.png" /></a></td><td class="name" id="'.urlencode(substrwords($filename,20)).'" title="'.urlencode(substrwords($filename,20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td></tr>');
 	}
 }
 

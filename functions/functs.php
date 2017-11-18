@@ -112,17 +112,24 @@ function dirEmpty($dirname,$allowed){
 }
 
 function compress_image($source_url, $destination_url, $quality) {
-	$info = getimagesize($source_url);
+	if(file_exists($source_url))
+	{
+		$info = getimagesize($source_url);
 
-	if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($source_url);
-	elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($source_url);
-	elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($source_url);
+		if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($source_url);
+		elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($source_url);
+		elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($source_url);
 
-	//save file
-	imagejpeg($image, $destination_url, $quality);
+		//save file
+		imagejpeg($image, $destination_url, $quality);
 
-	//return destination file
-	return $destination_url;
+		//return destination file
+		return $destination_url;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 function myTruncate($string, $limit, $break=".", $pad="...") {
@@ -149,18 +156,20 @@ function catch_regex($string,$regex){
 
 function substrwords($text,$maxchar,$end='...'){
 	if(strlen($text)>$maxchar){
-		$words=explode(" ",$text);
-		$output = ''; 
-		$i=0;
-		while(1){
-			$length = (strlen($output)+strlen($words[$i]));
-			if($length>$maxchar){
-				break;
-			} else {
-				$output = $output." ".$words[$i];
-				++$i;
-			};  
-		};  
+		//check for more than just spaces...
+		$split_chars = array('.','_','-',' ');
+		$words = array();
+		foreach($split_chars AS $splitby)
+		{
+			$outstr = explode($splitby,$text);
+			if($outstr != " ")
+			{
+				$words[] = $outstr;
+			}
+		}
+		//much more elegant to implode than
+		//the original while loop
+		$output = trim(implode(' ',$words[3]));
 	}else{
 		$output = $text;
 	}   

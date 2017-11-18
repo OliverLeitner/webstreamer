@@ -80,6 +80,11 @@ changed the favicon to a creative commons one.
 
 1.3b (gotta catch em all;-)
 
-php notices are fixed
-html5 validates again (removed some old meta's)
-clappr player template is now using $js_dir, to have the config.php setting apply
+php notices are fixed.
+html5 validates again (removed some old meta's).
+clappr player template is now using $js_dir, to have the config.php setting apply.
+
+1.3c (mouseover stuff, error handling)
+
+mouseover naming fixed for non conventional filenames.
+if a media file cannot be played anyways due to special characters, its also not showing up anymore.
