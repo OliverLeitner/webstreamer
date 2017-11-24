@@ -83,17 +83,29 @@ function dirEmpty($dirname,$allowed){
     if($_GET['dir'] != '/')
     {
         foreach($allowed["video"] AS $key => $ending){
-            //first level recursive...
-            $cmd = intval(exec('ls '.$dirname.'**/*.'.$ending.' |wc -l'));
+            //first level
+            $cmd = intval(exec('ls -m -B -f -R '.$dirname.'/*.'.$ending.' |wc -l'));
             if($cmd > 0)
             {
                 return true;
             }
-            //multiple level recursive
-            $cmd_sub = intval(exec('ls '.$dirname.'/**/*.'.$ending.' |wc -l'));
-            if($cmd_sub > 0)
+            //more than one level
+            $i = 1;
+            while($i <= 8)
             {
-                return true;
+                $builder = $i;
+                $param = "";
+                while($builder > 1)
+                {
+                    $param .= "/*";
+                    $builder--;
+                }
+                $cmd_sub = intval(exec('ls -m -B -f -R /'.$dirname.$param.'/*.'.$ending.' |wc -l'));
+                if($cmd_sub > 0)
+                {
+                    return true;
+                }
+                $i++;
             }
         }
     }
