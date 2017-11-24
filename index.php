@@ -1,5 +1,4 @@
 <?php
-//pagename definition
 $page = "index";
 require_once "loader.php";
 ####################################################################################################################################
@@ -52,59 +51,46 @@ $folder_list = array();
 $total_size = 0;
 
 if ($handle = opendir($this_folder))
-    // Open the current directory...
 {
-    // ...start scanning through it.
     while (false !== ($file = readdir($handle)))
     {
-        // Make sure we don't list this folder, file or their links.
-        if ($file != "." && $file != ".." && $file != './' && $file != $this_script && !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $file, $matches))
+        if ($file != "." && $file != ".." && $file != './' && $file != $this_script && 
+            !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $file, $matches))
         {
-            // Get file info.
-            $stat				=	stat($this_folder.$file); // ... slow, but faster than using filemtime() & filesize() instead.
-            $info				=	pathinfo($this_folder.$file);
-            // Organize file info.
-            $item['dir']		=	$this_folder;
-
+            $stat = stat($this_folder.$file);
+            $info = pathinfo($this_folder.$file);
+            $item['dir'] = $this_folder;
             if(is_file($this_folder.$file)){
-                $item['name']		=	$info['filename'];
+                $item['name'] = $info['filename'];
             } else {
-                $item['name']           =       $info['basename'];
+                $item['name'] = $info['basename'];
             }
-
-            $item['lname']		=	strtolower($info['filename']);
-
-            //actually checking first removes php notices...
+            $item['lname'] = strtolower($info['filename']);
             if(!isset($info['extension']) || $info['extension'] == '')
             {
                 $item['ext'] = '.';
             }
             else
             {
-                $item['ext']	=	$info['extension'];
+                $item['ext'] = $info['extension'];
             }
-
-            $item['bytes']		=	$stat['size'];
-            $item['size']		=	bytes_to_string($stat['size'], 2);
-            $item['mtime']		=	$stat['mtime'];
-
-            //setting video types...
+            $item['bytes'] = $stat['size'];
+            $item['size'] = bytes_to_string($stat['size'], 2);
+            $item['mtime'] = $stat['mtime'];
             if(isset($typesArray[$item['ext']]))
             {
                 if(isset($typesArray[$item['ext']]) && $typesArray[$item['ext']] != '')
                 {
-                    $item['type']   =   $typesArray[$item['ext']];
+                    $item['type'] = $typesArray[$item['ext']];
                 }
                 else
                 {
                     $item['type'] = 'undefined';
                 }
             }
-
-            // Add files to the file list...
-            if(is_file($item['dir'].$item['name'].".".$item['ext']) && !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $item['name'], $matches))
+            if(is_file($item['dir'].$item['name'].".".$item['ext']) && 
+                !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $item['name'], $matches))
             {
-                //filter out all files we do not want to show...
                 if(in_array($item['ext'],$filetype['video']))
                 {
                     if(isset($item['type']) && $item['type'] != '')
@@ -113,40 +99,34 @@ if ($handle = opendir($this_folder))
                     }
                 }
             }
-            // ...and folders to the folder list.
             else
             {
                 if ($item['dir'] == '/' && in_array($item['name'],$include_dirs))
                 {
                     array_push($folder_list, $item);
                 }
-
                 if ($item['dir'] != '/')
                 {
-                    //special case weird directory names...
                     if($item['name'] != '' && !preg_match('/[^a-zA-Z0-9\_\-\.]+/', $item['name'], $matches))
                     {
                         array_push($folder_list, $item);
                     }
                 }
             }
-            // Clear stat() cache to free up memory (not really needed).
             clearstatcache();
-            // Add this items file size to this folders total size
             $total_size += $item['bytes'];
         }
     }
-    // Close the directory when finished.
     closedir($handle);
 }
 
-// Sort folder list.
+//Sort folder list.
 if($folder_list)
     $folder_list = php_multisort($folder_list, $sort);
-// Sort file list.
+//Sort file list.
 if($file_list)
     $file_list = php_multisort($file_list, $sort);
-// Calculate the total folder size
+//Calculate the total folder size
 if($file_list && $folder_list)
     $total_size = bytes_to_string($total_size, 2);
 
@@ -163,11 +143,16 @@ if($folder_list) {
     foreach($folder_list as $item) {
         $has_files = dirEmpty($item["dir"].$item["name"],$filetype);
         if($has_files == TRUE){
-            $listfolders .= trim('<tr class="folder"><td class="name" title="'.urlencode($item['name']).'"><img src="images/Folder_open_trans.gif" alt="'.urlencode($item['name']).'" /><a href="?dir='.urlencode($item['dir']).urlencode($item['name']).'/" title="'.urlencode($item['name']).'">'.urlencode($item['name']).'</a></td></tr>');
+            $listfolders .= trim('<tr class="folder"><td class="name" title="'.
+                urlencode($item['name']).'"><img src="images/Folder_open_trans.gif" alt="'.
+                urlencode($item['name']).'" /><a href="?dir='.
+                urlencode($item['dir']).
+                urlencode($item['name']).'/" title="'.
+                urlencode($item['name']).'">'.
+                urlencode($item['name']).'</a></td></tr>');
         }
     }
 }
-
 
 if($file_list){
     if($m != ""){
@@ -177,12 +162,23 @@ if($file_list){
         //creating thumbnail for the player on player load
         $filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",$item['name']);
         $dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
-        $cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".escapeshellcmd($thumbs_dir.strtolower($filename))."_thumb.png'";
-        $out_duration_cmd = "avconv -i '".escapeshellcmd($item['dir'].$item['name']).".".escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".escapeshellcmd($meta_dir.strtolower($filename)).".txt'";
+        $cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".
+            escapeshellcmd($item['dir'].$item['name']).".".
+            escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".
+            escapeshellcmd($thumbs_dir.strtolower($filename))."_thumb.png'";
+
+        $out_duration_cmd = "avconv -i '".
+            escapeshellcmd($item['dir'].$item['name']).".".
+            escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".
+            escapeshellcmd($meta_dir.strtolower($filename)).".txt'";
+
         if(!file_exists($webroot."/".$thumbs_dir.strtolower($filename)."_thumb.png")){
             if($m != ""){
                 $m->set('cmd_thumb',exec($cmd_thumb));
-                $compressed_image = compress_image($thumbs_dir.strtolower($filename)."_thumb.png", $thumbs_dir.strtolower($filename)."_thumb.png", 60);
+                $compressed_image = compress_image($thumbs_dir.
+                    strtolower($filename)."_thumb.png", $thumbs_dir.
+                    strtolower($filename)."_thumb.png", 60);
+
                 if($compressed_image != false)
                 {
                     $m->set('compress_image',$compressed_image);
@@ -190,7 +186,10 @@ if($file_list){
                 }
             } else {
                 exec($cmd_thumb);
-                $compressed_image = compress_image($thumbs_dir.strtolower($filename)."_thumb.png", $thumbs_dir.strtolower($filename)."_thumb.png", 60);
+                $compressed_image = compress_image($thumbs_dir.
+                    strtolower($filename)."_thumb.png", $thumbs_dir.
+                    strtolower($filename)."_thumb.png", 60);
+
                 if($compressed_image != false)
                 {
                     gzcompress($thumbs_dir.strtolower($filename)."_thumb.png");
@@ -202,8 +201,25 @@ if($file_list){
         }
         $out_duration = file_get_contents(escapeshellcmd($meta_dir.strtolower($filename)).".txt");
         $out_duration = str_replace(",","<br />",$out_duration);
-        $popup_link = "/player.php?name=".$item['dir'].$item['name'].".".$item['ext']."&amp;file=".$item['name'].".".$item['ext']."&amp;type=".$item['type']."&t=".rand();
-        $listfiles .= trim('<tr class="file"><td class="thumb" title="'.urlencode(substrwords(strtolower($filename),20)).'"><span class="item_title">'.substrwords(strtolower($filename),20).'</span><a title="'.urlencode(substrwords(strtolower($filename),20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.urlencode(substrwords(strtolower($filename),20)).'" src="'.$thumbs_dir.strtolower($filename).'_thumb.png" /></a></td><td class="name" id="'.urlencode(substrwords(strtolower($filename),20)).'" title="'.urlencode(substrwords(strtolower($filename),20)).'"><img src="'.$this_script.'?image='.$item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.$item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.$item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.$item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.$item['size']['num'].'<span>'.$item['size']['str'].'</span></td></tr>');
+        $popup_link = "/player.php?name=".$item['dir'].$item['name'].".".
+            $item['ext']."&amp;file=".$item['name'].".".
+            $item['ext']."&amp;type=".$item['type']."&t=".rand();
+
+        $listfiles .= trim('<tr class="file"><td class="thumb" title="'.
+            urlencode(substrwords(strtolower($filename),20)).'"><span class="item_title">'.
+            substrwords(strtolower($filename),20).'</span><a title="'.
+            urlencode(substrwords(strtolower($filename),20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.
+            urlencode(substrwords(strtolower($filename),20)).'" src="'.
+            $thumbs_dir.strtolower($filename).'_thumb.png" /></a></td><td class="name" id="'.
+            urlencode(substrwords(strtolower($filename),20)).'" title="'.
+            urlencode(substrwords(strtolower($filename),20)).'"><img src="'.$this_script.'?image='.
+            $item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.
+            $item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.
+            $item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.
+            $item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.
+            $item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.
+            $item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.
+            $item['size']['num'].'<span>'.$item['size']['str'].'</span></td></tr>');
     }
 }
 

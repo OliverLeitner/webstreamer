@@ -11,7 +11,7 @@ function init_memcache($servers=array(),$delimiter){
 }
 
 /**
- *	http://us.php.net/manual/en/function.array-multisort.php#83117
+ * http://us.php.net/manual/en/function.array-multisort.php#83117
  */
 function php_multisort($data,$keys)
 {
@@ -33,7 +33,7 @@ function php_multisort($data,$keys)
 }
 
 /**
- *	@ http://us3.php.net/manual/en/function.filesize.php#84652
+ * http://us3.php.net/manual/en/function.filesize.php#84652
  */
 function bytes_to_string($size, $precision = 0) {
     $sizes = array('YB', 'ZB', 'EB', 'PB', 'TB', 'GB', 'MB', 'KB', 'Bytes');
@@ -45,7 +45,7 @@ function bytes_to_string($size, $precision = 0) {
 }
 
 /**
- *	@ http://us.php.net/manual/en/function.time.php#71342
+ * http://us.php.net/manual/en/function.time.php#71342
  */
 function time_ago($timestamp, $recursive = 0)
 {

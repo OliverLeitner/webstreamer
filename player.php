@@ -55,7 +55,11 @@ if($name_cmd == ""){
 /* global vars possible to set... */
 $style = "";
 $headscript = "";
-$tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback\" data-engine=\"flash\"><video id=\"container1\" class=\"player projekktor\" poster=\"".htmlentities($thumbs_dir.$filename)."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".$height."\" title=\"".htmlentities($title)."\" controls>";
+$tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".
+    $crtmpserver.":".
+    $crtmp_out_port."/flvplayback\" data-engine=\"flash\"><video id=\"container1\" class=\"player projekktor\" poster=\"".
+    htmlentities($thumbs_dir.$filename)."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".
+    $height."\" title=\"".htmlentities($title)."\" controls>";
 
 /* global definitions for all other players but flowplayer */
 if($name_cmd == $uid){
@@ -64,7 +68,7 @@ if($name_cmd == $uid){
     $default_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
 
     $tag .= "<source src=\"".htmlentities($long_src)."\"/>";
-    /*	load the desired player	*/
+    /* load the desired player */
     if($player == "clappr" || !isset($player)){
         include_once $webroot."/players/clappr/player.php";
         $clappr_tag = '<div id="container1"></div>';
@@ -88,7 +92,7 @@ if(($player == "clappr" || !isset($player)) && $name_cmd == $uid)
     $tag = $clappr_tag;
 }
 
-/*	writing our template... */
+/* writing our template */
 $body = doPlayer($style_main,$style,$headscript,$title,$tag,$contentscript,$js_dir);
 echo $body;
 $out = ob_get_contents();

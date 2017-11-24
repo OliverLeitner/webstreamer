@@ -101,3 +101,4 @@ a bit of code cleanup (theres more steps to go there...)
 
 removed init.sh script, not needed, just do the git submodule init && git
 submodule update as explained in the README.md
+added an older but with rtpm working version of clappr.min.js (0.2.58)
