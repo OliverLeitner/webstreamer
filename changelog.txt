@@ -96,3 +96,8 @@ replaced the find command with the ls command, now that gives us near realtime
 directory loading speed.
 
 a bit of code cleanup (theres more steps to go there...)
+
+1.3f (bugfixing, corrections...)
+
+removed init.sh script, not needed, just do the git submodule init && git
+submodule update as explained in the README.md

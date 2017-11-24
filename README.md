@@ -22,7 +22,7 @@ you plan to use it from the web.
 install procedure:
 
 1. git clone https://github.com/OliverLeitner/webstreamer.git in your webroot
-2. cd into the created folder and do a git submodule init to add clappr web video player (or copy in your extracted
+2. cd into the created folder and do a git submodule init  && git submodule update to add clappr web video player (or copy in your extracted
 jwplayer zip)
 3. change the config.php settings to fit your needs, if needed (buffer and width/height depending on your bandwidth)
 4. if youre behind a firewall, be sure you open port 8090 tcp (rtmpt) and port 1935 tcp (rtmp) 
