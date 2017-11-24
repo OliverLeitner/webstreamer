@@ -2,12 +2,11 @@
 /* clappr definitions */
 $quotes = array("'", '"');
 $style = "";
-$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."clappr/dist/clappr.min.js\"></script>\n";
+$headscript = "<script type=\"text/javascript\" src=\"".$js_dir."clappr.min.js\"></script>\n";
 $headscript .= "<script type=\"text/javascript\" src=\"".$js_dir."clappr-rtmp-plugin/dist/rtmp.min.js\"></script>";
 $contentscript = "<script type=\"text/javascript\">
     var player = new Clappr.Player({
     source: '".htmlentities($long_src)."',
-        parentId: '#container1',
         poster: '".htmlentities(str_replace($quotes, "", $thumbs_dir.$filename.'_thumb.png'))."',
         duration: ".$seconds.",
         plugins: {'playback': [RTMP]},
@@ -36,4 +35,7 @@ $contentscript = "<script type=\"text/javascript\">
         }
     },
 });
+
+var playerElement = document.getElementById(\"container1\");
+player.attachTo(playerElement);
 </script>";
