@@ -1,23 +1,22 @@
 <?php
 /* collection of required functions */
-
 /* initializing memcache support */
 function init_memcache($servers=array(),$delimiter){
-	$m = new Memcached();
-	foreach($servers AS $server){
-		$serverdata = explode($delimiter,$server);
-		$m->addServer($serverdata[0], $serverdata[1]);
-	}
-	return $m;
+    $m = new Memcached();
+    foreach($servers AS $server){
+        $serverdata = explode($delimiter,$server);
+        $m->addServer($serverdata[0], $serverdata[1]);
+    }
+    return $m;
 }
 
 /* creating a clean title from the filelink */
 function cleanTitle($ending,$string,$replacer="/",$replacing="."){
-	$title = str_replace($ending,"",$string);
-	$title = str_replace($replacer,$replacing,$string);
-	$titleArr = explode($replacing,$title);
-	$title = array_pop($titleArr);
-	return $title;
+    $title = str_replace($ending,"",$string);
+    $title = str_replace($replacer,$replacing,$string);
+    $titleArr = explode($replacing,$title);
+    $title = array_pop($titleArr);
+    return $title;
 }
 
 /**
@@ -25,33 +24,33 @@ function cleanTitle($ending,$string,$replacer="/",$replacing="."){
  */
 function php_multisort($data,$keys)
 {
-	$cols = array();
-	foreach ($data as $key => $row)
-	{
-		foreach ($keys as $k)
-		{
-			$cols[$k['key']][$key] = $row[$k['key']];
-		}
-	}
-	$idkeys = array_keys($data);
-	array_multisort($cols['lname'],SORT_ASC,$cols['size'],SORT_ASC,$idkeys);
-	foreach($idkeys as $idkey)
-	{
-		$result[$idkey]=$data[$idkey];
-	}
-	return $result;
+    $cols = array();
+    foreach ($data as $key => $row)
+    {
+        foreach ($keys as $k)
+        {
+            $cols[$k['key']][$key] = $row[$k['key']];
+        }
+    }
+    $idkeys = array_keys($data);
+    array_multisort($cols['lname'],SORT_ASC,$cols['size'],SORT_ASC,$idkeys);
+    foreach($idkeys as $idkey)
+    {
+        $result[$idkey]=$data[$idkey];
+    }
+    return $result;
 }
 
 /**
  *	@ http://us3.php.net/manual/en/function.filesize.php#84652
  */
 function bytes_to_string($size, $precision = 0) {
-	$sizes = array('YB', 'ZB', 'EB', 'PB', 'TB', 'GB', 'MB', 'KB', 'Bytes');
-	$total = count($sizes);
-	while($total-- && $size > 1024) $size /= 1024;
-	$return['num'] = round($size, $precision);
-	$return['str'] = $sizes[$total];
-	return $return;
+    $sizes = array('YB', 'ZB', 'EB', 'PB', 'TB', 'GB', 'MB', 'KB', 'Bytes');
+    $total = count($sizes);
+    while($total-- && $size > 1024) $size /= 1024;
+    $return['num'] = round($size, $precision);
+    $return['str'] = $sizes[$total];
+    return $return;
 }
 
 /**
@@ -59,107 +58,113 @@ function bytes_to_string($size, $precision = 0) {
  */
 function time_ago($timestamp, $recursive = 0)
 {
-	$current_time = time();
-	$difference = $current_time - $timestamp;
-	$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
-	$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
-	for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
-	if ($val < 0) $val = 0;
-	$new_time = $current_time - ($difference % $lengths[$val]);
-	$number = floor($number);
-	if($number != 1)
-	{
-		$periods[$val] .= "s";
-	}
-	$text = sprintf("%d %s ", $number, $periods[$val]);
+    $current_time = time();
+    $difference = $current_time - $timestamp;
+    $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
+    $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
+    for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
+    if ($val < 0) $val = 0;
+    $new_time = $current_time - ($difference % $lengths[$val]);
+    $number = floor($number);
+    if($number != 1)
+    {
+        $periods[$val] .= "s";
+    }
+    $text = sprintf("%d %s ", $number, $periods[$val]);
 
-	if (($recursive == 1) && ($val >= 1) && (($current_time - $new_time) > 0))
-	{
-		$text .= time_ago($new_time);
-	}
-	return $text;
+    if (($recursive == 1) && ($val >= 1) && (($current_time - $new_time) > 0))
+    {
+        $text .= time_ago($new_time);
+    }
+    return $text;
 }
 
 function dirEmpty($dirname,$allowed){
-	$has_allowed = FALSE;
-	$findtype = "";
-	$excludedirs = '-not -path "*svn*|*etc*|*root*|*lost+found*|*boot*|*app*"';
-	foreach($allowed["video"] AS $key => $ending){
-		$findtype .= "-name *.".$ending." -o ";
-	}
-
-	$findtype = rtrim($findtype," -o ");
-
-	//we dont run this if were on top of em all...
-	if($_GET["dir"] != "/")
-		$result = exec("find '".escapeshellcmd($dirname)."' -not -path ".escapeshellcmd($excludedirs)." -type f ".escapeshellcmd($findtype));
-	if(isset($result) && $result != "" || $_GET["dir"] == "/"){
-		$has_allowed = TRUE;
-	}
-	return $has_allowed;
+    if($_GET['dir'] != '/')
+    {
+        foreach($allowed["video"] AS $key => $ending){
+            //first level recursive...
+            $cmd = intval(exec('ls '.$dirname.'**/*.'.$ending.' |wc -l'));
+            if($cmd > 0)
+            {
+                return true;
+            }
+            //multiple level recursive
+            $cmd_sub = intval(exec('ls '.$dirname.'/**/*.'.$ending.' |wc -l'));
+            if($cmd_sub > 0)
+            {
+                return true;
+            }
+        }
+    }
+    if($_GET["dir"] == "/")
+    {
+        return true;
+    }
+    return false;
 }
 
 function compress_image($source_url, $destination_url, $quality) {
-	if(file_exists($source_url))
-	{
-		$info = getimagesize($source_url);
+    if(file_exists($source_url))
+    {
+        $info = getimagesize($source_url);
 
-		if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($source_url);
-		elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($source_url);
-		elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($source_url);
+        if ($info['mime'] == 'image/jpeg') $image = imagecreatefromjpeg($source_url);
+        elseif ($info['mime'] == 'image/gif') $image = imagecreatefromgif($source_url);
+        elseif ($info['mime'] == 'image/png') $image = imagecreatefrompng($source_url);
 
-		//save file
-		imagejpeg($image, $destination_url, $quality);
+        //save file
+        imagejpeg($image, $destination_url, $quality);
 
-		//return destination file
-		return $destination_url;
-	}
-	else
-	{
-		return false;
-	}
+        //return destination file
+        return $destination_url;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 function myTruncate($string, $limit, $break=".", $pad="...") {
-	if(strlen($string) <= $limit) return $string;
-	if(false !== ($breakpoint = strpos($string, $break, $limit))) {
-		if($breakpoint < strlen($string) - 1) {
-			$string = substr($string, 0, $breakpoint) . $pad;
-		}   
-	}   
-	return $string; 
-}   
+    if(strlen($string) <= $limit) return $string;
+    if(false !== ($breakpoint = strpos($string, $break, $limit))) {
+        if($breakpoint < strlen($string) - 1) {
+            $string = substr($string, 0, $breakpoint) . $pad;
+        }
+    }
+    return $string; 
+}
 
 function ellipsis($text, $max=100, $append='&hellip;') {
-	if (strlen($text) <= $max) return $text;
-	$out = substr($text,0,$max);
-	if (strpos($text,' ') === FALSE) return $out.$append;
-	return preg_replace('/\w+$/','',$out).$append;
-}   
+    if (strlen($text) <= $max) return $text;
+    $out = substr($text,0,$max);
+    if (strpos($text,' ') === FALSE) return $out.$append;
+    return preg_replace('/\w+$/','',$out).$append;
+}
 
 function catch_regex($string,$regex){
-	$out = preg_split($regex, $string);
-	return $out;
-}   
+    $out = preg_split($regex, $string);
+    return $out;
+}
 
 function substrwords($text,$maxchar,$end='...'){
-	if(strlen($text)>$maxchar){
-		//check for more than just spaces...
-		$split_chars = array('.','_','-',' ');
-		$words = array();
-		foreach($split_chars AS $splitby)
-		{
-			$outstr = explode($splitby,$text);
-			if($outstr != " ")
-			{
-				$words[] = $outstr;
-			}
-		}
-		//much more elegant to implode than
-		//the original while loop
-		$output = trim(implode(' ',$words[3]));
-	}else{
-		$output = $text;
-	}   
-	return $output.$end;
+    if(strlen($text)>$maxchar){
+        //check for more than just spaces...
+        $split_chars = array('.','_','-',' ');
+        $words = array();
+        foreach($split_chars AS $splitby)
+        {
+            $outstr = explode($splitby,$text);
+            if($outstr != " ")
+            {
+                $words[] = $outstr;
+            }
+        }
+        //much more elegant to implode than
+        //the original while loop
+        $output = trim(implode(' ',$words[3]));
+    }else{
+        $output = $text;
+    }
+    return $output.$end;
 }
