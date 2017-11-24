@@ -1,2 +1,5 @@
 scripts/clappr
 scripts/clappr-rtmp-plugin
+meta
+thumbs
+cmd/ff*log*
