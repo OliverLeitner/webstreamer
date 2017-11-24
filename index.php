@@ -58,7 +58,7 @@ if ($handle = opendir($this_folder))
     while (false !== ($file = readdir($handle)))
     {
         // Make sure we don't list this folder, file or their links.
-        if ($file != "." && $file != ".." && $file != './' && $file != $this_script && !preg_match('/[^a-zA-Z0-9\_\-\.]+/', $file, $matches))
+        if ($file != "." && $file != ".." && $file != './' && $file != $this_script && !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $file, $matches))
         {
             // Get file info.
             $stat				=	stat($this_folder.$file); // ... slow, but faster than using filemtime() & filesize() instead.
@@ -102,7 +102,7 @@ if ($handle = opendir($this_folder))
             }
 
             // Add files to the file list...
-            if(is_file($item['dir'].$item['name'].".".$item['ext']) && !preg_match('/[^a-zA-Z0-9\_\-\.]+/', $item['name'], $matches))
+            if(is_file($item['dir'].$item['name'].".".$item['ext']) && !preg_match('/[^a-zA-Z0-9\_\-\.\,]+/', $item['name'], $matches))
             {
                 //filter out all files we do not want to show...
                 if(in_array($item['ext'],$filetype['video']))
