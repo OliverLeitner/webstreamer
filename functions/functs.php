@@ -10,15 +10,6 @@ function init_memcache($servers=array(),$delimiter){
     return $m;
 }
 
-/* creating a clean title from the filelink */
-function cleanTitle($ending,$string,$replacer="/",$replacing="."){
-    $title = str_replace($ending,"",$string);
-    $title = str_replace($replacer,$replacing,$string);
-    $titleArr = explode($replacing,$title);
-    $title = array_pop($titleArr);
-    return $title;
-}
-
 /**
  *	http://us.php.net/manual/en/function.array-multisort.php#83117
  */
@@ -79,6 +70,9 @@ function time_ago($timestamp, $recursive = 0)
     return $text;
 }
 
+/**
+ * directory scanner function
+ */
 function dirEmpty($dirname,$allowed){
     if($_GET['dir'] != '/')
     {
@@ -116,6 +110,9 @@ function dirEmpty($dirname,$allowed){
     return false;
 }
 
+/**
+ * compress down thumbnails on the fly
+ */
 function compress_image($source_url, $destination_url, $quality) {
     if(file_exists($source_url))
     {
@@ -137,28 +134,9 @@ function compress_image($source_url, $destination_url, $quality) {
     }
 }
 
-function myTruncate($string, $limit, $break=".", $pad="...") {
-    if(strlen($string) <= $limit) return $string;
-    if(false !== ($breakpoint = strpos($string, $break, $limit))) {
-        if($breakpoint < strlen($string) - 1) {
-            $string = substr($string, 0, $breakpoint) . $pad;
-        }
-    }
-    return $string; 
-}
-
-function ellipsis($text, $max=100, $append='&hellip;') {
-    if (strlen($text) <= $max) return $text;
-    $out = substr($text,0,$max);
-    if (strpos($text,' ') === FALSE) return $out.$append;
-    return preg_replace('/\w+$/','',$out).$append;
-}
-
-function catch_regex($string,$regex){
-    $out = preg_split($regex, $string);
-    return $out;
-}
-
+/**
+ * create title from filename
+ */
 function substrwords($text,$maxchar,$end='...'){
     if(strlen($text)>$maxchar){
         //check for more than just spaces...
