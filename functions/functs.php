@@ -90,12 +90,16 @@ function time_ago($timestamp, $recursive = 0)
 /**
  * directory scanner function
  */
-function dirEmpty($dirname,$allowed){
+function dirEmpty($dirname,$allowed,$commands){
     if($_GET['dir'] != '/')
     {
+        $params['directory_name'] = $dirname;
+        $params['subdirs'] = '';
         foreach($allowed["video"] AS $key => $ending){
             //first level
-            $cmd = intval(exec('ls -m -B -f -R '.$dirname.'/*.'.$ending.' |wc -l'));
+            $params['file_ending'] = $ending;
+            $cmd_dir = buildCmd($params,$commands['find_file']);
+            $cmd = intval(exec($cmd_dir));
             if($cmd > 0)
             {
                 return true;
@@ -111,7 +115,9 @@ function dirEmpty($dirname,$allowed){
                     $param .= "/*";
                     $builder--;
                 }
-                $cmd_sub = intval(exec('ls -m -B -f -R /'.$dirname.$param.'/*.'.$ending.' |wc -l'));
+                $params['subdirs'] = $param;
+                $cmd_dir_level2 = buildCmd($params,$commands['find_file']);
+                $cmd_sub = intval(exec($cmd_dir_level2));
                 if($cmd_sub > 0)
                 {
                     return true;

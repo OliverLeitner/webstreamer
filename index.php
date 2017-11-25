@@ -143,7 +143,7 @@ if($folder_list) {
         $folder_list = $m->get('folder_list');
     }
     foreach($folder_list as $item) {
-        $has_files = dirEmpty($item["dir"].$item["name"],$filetype);
+        $has_files = dirEmpty($item["dir"].$item["name"],$filetype,$commands);
         if($has_files == TRUE){
             $listfolders .= trim('<tr class="folder"><td class="name" title="'.
                 urlencode($item['name']).'"><img src="images/Folder_open_trans.gif" alt="'.
@@ -162,65 +162,61 @@ if($file_list){
     }
     foreach($file_list as $item) {
         //creating thumbnail for the player on player load
+        $params['file_path'] = $item['dir'].$item['name'].'.'.$item['ext'];
+        $params['thumb_dir'] = $thumbs_dir;
         $filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",$item['name']);
-        $dirname = dirname($item['dir'].$item['name'].'.'.$item['ext']);
-        $cmd_thumb = "avconv -ss 00:02:00 -t 1 -i '".
-            escapeshellcmd($item['dir'].$item['name']).".".
-            escapeshellcmd($item['ext'])."' -r 16 -qscale 1 -s 320x240 -f image2 '".
-            escapeshellcmd($thumbs_dir.strtolower($filename))."_thumb.png'";
+        $params['thumb_name'] = strtolower($filename);
+        $cmd_thumb = buildCmd($params,$commands['create_thumbnail']);
 
-        $out_duration_cmd = "avconv -i '".
-            escapeshellcmd($item['dir'].$item['name']).".".
-            escapeshellcmd($item['ext'])."' 2>&1 | grep Duration > '".
-            escapeshellcmd($meta_dir.strtolower($filename)).".txt'";
+        $params['meta_dir'] = $meta_dir;
+        $out_duration_cmd = buildCmd($params,$commands['write_metadata']);
 
-        if(!file_exists($webroot."/".$thumbs_dir.strtolower($filename)."_thumb.png")){
+        if(!file_exists($webroot."/".$params['thumb_dir'].$params['thumb_name']."_thumb.png")){
             if($m != ""){
                 $m->set('cmd_thumb',exec($cmd_thumb));
-                $compressed_image = compress_image($thumbs_dir.
-                    strtolower($filename)."_thumb.png", $thumbs_dir.
-                    strtolower($filename)."_thumb.png", 60);
+                $compressed_image = compress_image($params['thumb_dir'].
+                    $params['thumb_name']."_thumb.png", $params['thumb_dir'].
+                    $params['thumb_name']."_thumb.png", 60);
 
                 if($compressed_image != false)
                 {
                     $m->set('compress_image',$compressed_image);
-                    $m->set('gzcompress',gzcompress($thumbs_dir.strtolower($filename)."_thumb.png"));
+                    $m->set('gzcompress',gzcompress($params['thumb_dir'].$params['thumb_name']."_thumb.png"));
                 }
             } else {
                 exec($cmd_thumb);
-                $compressed_image = compress_image($thumbs_dir.
-                    strtolower($filename)."_thumb.png", $thumbs_dir.
-                    strtolower($filename)."_thumb.png", 60);
+                $compressed_image = compress_image($params['thumb_dir'].
+                    $params['thumb_name']."_thumb.png", $params['thumb_dir'].
+                    $params['thumb_name']."_thumb.png", 60);
 
                 if($compressed_image != false)
                 {
-                    gzcompress($thumbs_dir.strtolower($filename)."_thumb.png");
+                    gzcompress($params['thumb_dir'].$params['thumb_name']."_thumb.png");
                 }
             }
         }
-        if(!file_exists($webroot."/".$meta_dir.strtolower($filename).".txt")){
+        if(!file_exists($webroot."/".$params['meta_dir'].$params['thumb_name'].".txt")){
             exec($out_duration_cmd);
         }
-        $out_duration = file_get_contents(escapeshellcmd($meta_dir.strtolower($filename)).".txt");
+        $out_duration = file_get_contents(escapeshellcmd($params['meta_dir'].$params['thumb_name']).".txt");
         $out_duration = str_replace(",","<br />",$out_duration);
-        $popup_link = "/player.php?name=".$item['dir'].$item['name'].".".
-            $item['ext']."&amp;file=".$item['name'].".".
+        $popup_link = "/player.php?name=".$params['file_path']."&amp;file=".$item['name'].".".
             $item['ext']."&amp;type=".$item['type']."&t=".rand();
 
         $listfiles .= trim('<tr class="file"><td class="thumb" title="'.
-            urlencode(substrwords(strtolower($filename),20)).'"><span class="item_title">'.
-            substrwords(strtolower($filename),20).'</span><a title="'.
-            urlencode(substrwords(strtolower($filename),20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.
-            urlencode(substrwords(strtolower($filename),20)).'" src="'.
-            $thumbs_dir.strtolower($filename).'_thumb.png" /></a></td><td class="name" id="'.
-            urlencode(substrwords(strtolower($filename),20)).'" title="'.
-            urlencode(substrwords(strtolower($filename),20)).'"><img src="'.$this_script.'?image='.
+            urlencode(substrwords($params['thumb_name'],20)).'"><span class="item_title">'.
+            substrwords($params['thumb_name'],20).'</span><a title="'.
+            urlencode(substrwords($params['thumb_name'],20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.
+            urlencode(substrwords($params['thumb_name'],20)).'" src="'.
+            $params['thumb_dir'].$params['thumb_name'].'_thumb.png" /></a></td><td class="name" id="'.
+            urlencode(substrwords($params['thumb_name'],20)).'" title="'.
+            urlencode(substrwords($params['thumb_name'],20)).'"><img src="'.$this_script.'?image='.
             $item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.
             $item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.
-            $item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$item['dir'].$item['name'].'.'.
-            $item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.
-            $item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$item['dir'].$item['name'].'.'.
-            $item['ext'].'\',\''.$item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.
+            $item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$params['file_path'].'\',\''.
+            $item['name'].'.'.$item['ext'].'\');">start</a></td><td class="stop"><a href="#'.
+            $item['name'].'" onclick="javascript:ajax_cmd(\'stop\',\''.$params['file_path'].'\',\''.
+            $item['name'].'.'.$item['ext'].'\');">stop</a></td><td class="size">'.
             $item['size']['num'].'<span>'.$item['size']['str'].'</span></td></tr>');
     }
 }

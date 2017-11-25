@@ -50,6 +50,7 @@ if(isset($_GET['image']))
 /**
  * command definition collection
  */
+$commands = array();
 $commands['ps_get'] = "ps auxf |grep ###uid### |gawk '{print $13}' |grep avconv";
 
 $commands['start_avconv'] = "nice -n19 avconv -re -i ###file_path### ";
@@ -64,3 +65,11 @@ $commands['subtitles'] = "-vf subtitles=###file_path###";
 $commands['check_subtitle'] = "avconv -i ###file_path### 2>&1 |grep Subtitle";
 
 $commands['stop_avconv'] = "kill -9 $(ps auxf |grep ###uid### |gawk '{print $2}') 2>&1";
+
+$commands['find_file'] = "ls -m -B -f -R ###directory_name######subdirs###/*.###file_ending### |wc -l";
+
+$commands['create_thumbnail'] = "avconv -ss 00:02:00 -t 1 -i ###file_path### ";
+$commands['create_thumbnail'] .= "-r 16 -qscale 1 -s 320x240 -f image2 ###thumb_dir######thumb_name###_thumb.png";
+
+$commands['write_metadata'] = "avconv -i ###file_path### 2>&1 ";
+$commands['write_metadata'] .= "|grep Duration > ###meta_dir######thumb_name###.txt";

@@ -3,3 +3,5 @@ scripts/clappr-rtmp-plugin
 meta
 thumbs
 cmd/ff*log*
+php_errors.log
+cmd/php_errors.log
