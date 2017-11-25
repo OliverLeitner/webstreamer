@@ -1,6 +1,6 @@
 <?php
 require_once "../loader.php";
-$init='nice -n19';
+$init='nohup nice -n19';
 $file=$_GET['file'];
 $name=$_GET['name'];
 $uid=md5($_SERVER['REMOTE_ADDR'].$name); //multi user stuff...
@@ -25,5 +25,7 @@ $check_cmd = "ps auxf |grep {$uid} |awk '{ print $13}' |grep avconv";
 $checked = shell_exec($check_cmd);
 //only start encoder if its not already running...
 if($checked == ""){
-    passthru("{$init} {$source} {$presets} {$audio} {$video} {$subtitles} {$output} '{$target}' 2>&1",$returnval);
+    //new backgrounding of the process without spawning a shell
+    $cmd = "{$init} {$source} {$presets} {$audio} {$video} {$subtitles} {$output} '{$target}' 2>&1 | at now & disown";
+    shell_exec($cmd);
 }
