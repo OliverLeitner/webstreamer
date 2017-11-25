@@ -1,0 +1,21 @@
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+
+AddType video/x-m4v .m4v
+AddType video/mp4 .mp4 .mov .mkv
+AddType video/ogg .ogm .ogv .ogg
+AddType video/webm .webm
+AddType audio/webm .weba
+AddType audio/mpeg mpga mp2 mp2a mp3 m2a m3a
+AddType audio/ogg oga ogg spx
+AddType audio/mp4 mp4a
+AddType audio/playlist m3u M3U
+AddType application/x-shockwave-flash swf
+
+RewriteRule ^(.*)\.ogv - [E=no-gzip:1]
+RewriteRule ^(.*)\.ogm - [E=no-gzip:1]
+RewriteRule ^(.*)\.mp4 - [E=no-gzip:1]
+RewriteRule ^(.*)\.m4v - [E=no-gzip:1]
+
+SetEnvIfNoCase Request_URI \.(ogv|ogm|mkv|mp4|m4v|webm)$ no-gzip dont-vary

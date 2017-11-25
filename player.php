@@ -53,7 +53,7 @@ if($name_cmd == $params['uid']){
     $short_src = $name_cmd;
     $default_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
 
-    $tag .= "<source src=\"".htmlentities($long_src)."\"/>";
+    $tag .= "<source type=\"".$type."\" src=\"".htmlentities($long_src)."\"/>";
     /* load the desired player */
     if($player == "clappr" || !isset($player)){
         include_once $webroot."/players/clappr/player.php";
@@ -67,7 +67,7 @@ if($name_cmd == $params['uid']){
     $short_src = $long_src;
     $default_src = $long_src;
 
-    $tag .= "<source src=\"".htmlentities($long_src)."\" type=\"".htmlentities($type)."\" />";
+    $tag .= "<source type='".$type.";codecs=\"".$codecs[$type]."\"' src=\"".htmlentities($long_src)."\" autobuffer controls preload=\"auto\"/>";
 }
 $tag .= "</video></div>";
 
@@ -91,6 +91,7 @@ $markers['players_styles'] = $style;
 $tpl_file = "templates/player.html";
 
 /* writing our template */
+header('X-Content-Duration: '.$seconds);
 echo templating($tpl_file,$markers);
 $out = ob_get_contents();
 ob_end_flush();
