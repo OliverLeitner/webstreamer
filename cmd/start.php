@@ -5,7 +5,7 @@
  */
 require_once "../loader.php";
 $checkfile = __FILE__;
-$checkdir = glob($file)[0];
+$checkdir = glob($checkfile)[0];
 if(is_writable($checkdir))
 {
     $init='nice -n19';
