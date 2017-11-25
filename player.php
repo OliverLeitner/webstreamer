@@ -16,7 +16,7 @@ $video_title = explode($matched[0],basename($name))[0];
 $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
 //commandline testing if we got our rtmp stream running or not
-$cmd = "ps auxf |grep {$uid} |awk '{ print $13 }' |grep avconv";
+$cmd = preg_replace('/###uid###/i',$uid,$commands['ps_get']);
 $name_cmd = exec($cmd);
 
 //reading the existing thumbnail for the file...

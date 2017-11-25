@@ -3,7 +3,7 @@
  * stopping a running encoding
  */
 require_once "../loader.php";
-$file=escapeshellcmd($_GET['file']);
-$name=escapeshellcmd(md5($_SERVER['REMOTE_ADDR'].$_GET['name']));
-passthru("kill -9 $(ps aux | grep '".$name."' |awk '{print $2}') 2>&1",$returnval);
+$params['uid'] = md5($_SERVER['REMOTE_ADDR'].$_GET['name']);
+$cmd = buildCmd($params,$commands['stop_avconv']);
+passthru($cmd,$returnval);
 echo "command stopped";

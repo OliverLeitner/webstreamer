@@ -175,3 +175,21 @@ function substrwords($text,$maxchar,$end='...'){
     }
     return $output.$end;
 }
+
+/**
+ * build a shell command
+ *
+ * @param mixed $params replacement string array
+ * @param string $cmd_tpl command template string
+ *
+ * @return returns the built commandstring
+ */
+function buildCmd($params,$cmd_tpl)
+{
+    $command = $cmd_tpl;
+    foreach($params AS $dkey => $data)
+    {
+        $command = preg_replace('/###'.$dkey.'###/i',$data,$command);
+    }
+    return $command;
+}

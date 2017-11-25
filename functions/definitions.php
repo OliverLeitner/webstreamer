@@ -46,3 +46,21 @@ if(isset($_GET['image']))
     // Exit this script when the correct image has been served
     exit();
 }
+
+/**
+ * command definition collection
+ */
+$commands['ps_get'] = "ps auxf |grep ###uid### |gawk '{print $13}' |grep avconv";
+
+$commands['start_avconv'] = "nice -n19 avconv -re -i ###file_path### ";
+$commands['start_avconv'] .= "-acodec libmp3lame -ab 8k -ar 22050 -aq 9 -ac 1 -vcodec libx264 ";
+$commands['start_avconv'] .= "-pass 1 -b:v 246k -s vga -strict experimental -g 20 -me_method zero ";
+$commands['start_avconv'] .= "-f flv -r 35 -metadata streamName=###uid### ";
+$commands['start_avconv'] .= "-metadata fullPath=###file_path### ";
+$commands['start_avconv'] .= "'tcp://###crtmpserver###:###crtmp_in_port###?pkt_size=650' 2>&1";
+
+$commands['subtitles'] = "-vf subtitles=###file_path###";
+
+$commands['check_subtitle'] = "avconv -i ###file_path### 2>&1 |grep Subtitle";
+
+$commands['stop_avconv'] = "kill -9 $(ps auxf |grep ###uid### |gawk '{print $2}') 2>&1";
