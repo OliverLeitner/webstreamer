@@ -1,6 +1,10 @@
 <?php
+/**
+ * send an encoding request
+ * to avconv
+ */
 require_once "../loader.php";
-$file = __FILE__;
+$checkfile = __FILE__;
 $checkdir = glob($file)[0];
 if(is_writable($checkdir))
 {
@@ -25,7 +29,7 @@ if(is_writable($checkdir))
     } else {
         $subtitles = "";
     }
-    $check_cmd = "ps auxf |grep {$uid} |awk '{ print $13}' |grep avconv";
+    $check_cmd = "ps auxf |grep {$uid} |awk '{print $13}' |grep avconv";
     $checked = shell_exec($check_cmd);
     //only start encoder if its not already running...
     if($checked == ""){
