@@ -13,10 +13,10 @@ preg_match('/\.[0-9A-Za-z]{3}$/',basename($name),$matched);
 $video_title = explode($matched[0],basename($name))[0];
 
 //for multiuser support we use client ip and chosen file
-$uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
+$params['uid'] = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
 //commandline testing if we got our rtmp stream running or not
-$cmd = preg_replace('/###uid###/i',$uid,$commands['ps_get']);
+$cmd = buildCmd($params,$commands['ps_get']);
 $name_cmd = exec($cmd);
 
 //reading the existing thumbnail for the file...
@@ -54,7 +54,7 @@ $seconds = $parsed['hour'] * 3600 + $parsed['minute'] * 60 + $parsed['second'];
 if($name_cmd == ""){
     $name_cmd = $name;
 } else {
-    $name_cmd = $uid;
+    $name_cmd = $params['uid'];
 }
 
 /* global vars possible to set... */
@@ -67,7 +67,7 @@ $tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\
     $height."\" title=\"".htmlentities($title)."\" controls>";
 
 /* global definitions for all other players but flowplayer */
-if($name_cmd == $uid){
+if($name_cmd == $params['uid']){
     $long_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
     $short_src = $name_cmd;
     $default_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
@@ -92,7 +92,7 @@ $tag .= "</video></div>";
 
 //special case for clappr player, cause he hates the video tag
 //in this version...
-if(($player == "clappr" || !isset($player)) && $name_cmd == $uid)
+if(($player == "clappr" || !isset($player)) && $name_cmd == $params['uid'])
 {
     $tag = $clappr_tag;
 }
