@@ -3,10 +3,16 @@
 $page = "player";
 require_once "loader.php";
 
+//array to store the markers...
+$markers = array();
+
 //grab the full filepath...
 $name = addslashes(ltrim(urldecode(str_replace("..", "", $_GET['name'])),"/"));
 $type = $_GET['type'];
 $title = urldecode($_GET['name']);
+preg_match('/\.[0-9A-Za-z]{3}$/',basename($name),$matched);
+$video_title = explode($matched[0],basename($name))[0];
+
 //for multiuser support we use client ip and chosen file
 $uid = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 
@@ -92,8 +98,19 @@ if(($player == "clappr" || !isset($player)) && $name_cmd == $uid)
     $tag = $clappr_tag;
 }
 
+//combining all the above...
+$markers['players_content_script'] = $contentscript;
+$markers['players_scripts'] = $headscript;
+$markers['players_content_tag'] = $tag;
+$markers['title'] = $title;
+$markers['video_title'] = $video_title;
+$markers['js_dir'] = $js_dir;
+$markers['main_style'] = $style_main;
+$markers['players_styles'] = $style;
+//choose a template file...
+$tpl_file = "templates/player.html";
+
 /* writing our template */
-$body = doPlayer($style_main,$style,$headscript,$title,$tag,$contentscript,$js_dir);
-echo $body;
+echo templating($tpl_file,$markers);
 $out = ob_get_contents();
 ob_end_flush();

@@ -11,6 +11,23 @@ function init_memcache($servers=array(),$delimiter){
 }
 
 /**
+ * filling out the listings
+ *
+ * @param string $tpl_file filename and location of the template file
+ * @param mixed $settings the template marker data
+ *
+ * @return string filled out template
+ */
+function templating($tpl_file,$settings){
+    $template = file_get_contents($tpl_file);
+    foreach($settings AS $skey => $sdata)
+    {
+        $template = preg_replace('/###'.$skey.'###/i',$sdata,$template);
+    }
+    return $template;
+}
+
+/**
  * http://us.php.net/manual/en/function.array-multisort.php#83117
  */
 function php_multisort($data,$keys)

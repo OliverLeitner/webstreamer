@@ -26,6 +26,9 @@ require_once "loader.php";
 
 /**********************************************************************************************************************************/
 /************************************************************************************************************[ DIRECTORY LOGIC ]***/
+//template markers
+$markers = array();
+
 //predefine here, for funct at the bottom...
 $listfiles = '';
 $listfolders = '';
@@ -223,7 +226,18 @@ if($file_list){
     }
 }
 
-$body = doIndex($style_main,$js_dir,($height+80),$width,$this_folder,$listfolders,$listfiles);
-echo $body;
+//filling out the template markers
+$markers['main_style'] = $style_main;
+$markers['js_dir'] = $js_dir;
+$markers['height'] = intval($height)+80;
+$markers['width'] = intval($width)+20;
+$markers['folder'] = $this_folder;
+$markers['list_folders'] = $listfolders;
+$markers['list_files'] = $listfiles;
+//define the template file
+$tpl_file = 'templates/index.html';
+
+//output
+echo templating($tpl_file,$markers);
 $out = ob_get_contents();
 ob_end_flush();

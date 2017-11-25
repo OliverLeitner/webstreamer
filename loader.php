@@ -17,10 +17,6 @@ $webroot = "/var/www/webstreamer";
 //start loading things...
 require_once $webroot."/functions/functs.php";
 require_once $webroot."/functions/definitions.php";
-if(isset($page))
-{
-    require_once $webroot."/templates/".$page.".php";
-}
 require_once $webroot."/config.php";
 
 //initialize memcached support if possible
