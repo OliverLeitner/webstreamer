@@ -52,6 +52,7 @@ if(isset($_GET['image']))
  */
 $commands = array();
 $commands['ps_get'] = "ps auxf |grep ###uid### |gawk '{print $13}' |grep avconv";
+$commands['ps_kill'] = "ps auxf |grep ###uid### |gawk '{print $12}' |grep avconv";
 
 $commands['start_avconv'] = "nice -n19 avconv -re -i ###file_path### ";
 $commands['start_avconv'] .= "-acodec libmp3lame -ab 8k -ar 22050 -aq 9 -ac 1 -vcodec libx264 ";
