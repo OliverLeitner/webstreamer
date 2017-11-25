@@ -19,26 +19,7 @@ $params['uid'] = md5($_SERVER['REMOTE_ADDR'].$_GET['file']);
 $cmd = buildCmd($params,$commands['ps_get']);
 $name_cmd = exec($cmd);
 
-//reading the existing thumbnail for the file...
-$filearray = explode(".",$_GET['file']);
-$filebase = "";
-$farr_size = count($filearray);
-$i = 0;
-foreach($filearray AS $part)
-{
-    //if we arent the extension...
-    if($i < ($farr_size - 1))
-    {
-        //if we arent the first word in the name...
-        if($i > 0)
-        {
-            $filebase .= ".";
-        }
-        $filebase .= $part;
-    }
-    $i++;
-}
-$filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",strtolower($filebase));
+$filename = preg_replace("/[^A-Za-z0-9\_\-\.]/","",strtolower($video_title));
 //reading out the duration of a clip to have a scrollbar...
 $data = file_get_contents($meta_dir.$filename.".txt");
 
