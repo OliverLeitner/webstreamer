@@ -1,6 +1,5 @@
 <?php
 //page init
-$page = "player";
 require_once "loader.php";
 
 //array to store the markers...
