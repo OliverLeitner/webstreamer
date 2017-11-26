@@ -205,8 +205,8 @@ if($file_list){
 
         $listfiles .= trim('<tr class="file"><td class="thumb" title="'.
             urlencode(substrwords($params['thumb_name'],20)).'">'.
-            '<strong>Direct link:</strong> <a href="http://'.$storageserver.':'.$storageport.'/'.$params['file_path'].
-            '" target="_blank">'.$params['thumb_name'].'</a><br/><span class="item_title">'.
+            '<a href="http://'.$storageserver.':'.$storageport.'/'.$params['file_path'].
+            '" target="_blank">Direct Link</a><br/><span class="item_title">'.
             substrwords($params['thumb_name'],20).'</span><a title="'.
             urlencode(substrwords($params['thumb_name'],20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.
             urlencode(substrwords($params['thumb_name'],20)).'" src="'.
