@@ -9,7 +9,7 @@ $checkdir = glob($checkfile)[0];
 if(is_writable($checkdir))
 {
     $params = array();
-    $params['file_path'] = escapeshellarg($_GET['file']);
+    $params['file_path'] = $_GET['file'];
     $params['uid'] = md5($_SERVER['REMOTE_ADDR'].$_GET['name']); //multi user stuff...
     $params['crtmpserver'] = $crtmpserver;
     $params['crtmp_in_port'] = $crtmp_in_port;

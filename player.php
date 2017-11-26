@@ -44,8 +44,8 @@ $headscript = "";
 $tag = "<div id=\"css-poster\" class=\"player minimalist is-splash\" data-rtmp=\"rtmp://".
     $crtmpserver.":".
     $crtmp_out_port."/flvplayback\" data-engine=\"flash\"><video id=\"container1\" class=\"player projekktor\" poster=\"".
-    htmlentities($thumbs_dir.$filename)."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".
-    $height."\" title=\"".htmlentities($title)."\" controls>";
+    $thumbs_dir.$filename."_thumb.png\" data-engine=\"html5\" width=\"".$width."\" height=\"".
+    $height."\" title=\"".$title."\" controls>";
 
 /* global definitions for all other players but flowplayer */
 if($name_cmd == $params['uid']){
@@ -53,7 +53,7 @@ if($name_cmd == $params['uid']){
     $short_src = $name_cmd;
     $default_src = "rtmp://".$crtmpserver.":".$crtmp_out_port."/flvplayback/".$name_cmd;
 
-    $tag .= "<source type=\"".$type."\" src=\"".htmlentities($long_src)."\"/>";
+    $tag .= "<source type=\"".$type."\" src=\"".$long_src."\"/>";
     /* load the desired player */
     if($player == "clappr" || !isset($player)){
         include_once $webroot."/players/clappr/player.php";
@@ -67,7 +67,7 @@ if($name_cmd == $params['uid']){
     $short_src = $long_src;
     $default_src = $long_src;
 
-    $tag .= "<source type='".$type.";codecs=\"".$codecs[$type]."\"' src=\"".htmlentities($long_src)."\" autobuffer controls preload=\"auto\"/>";
+    $tag .= "<source type='".$type.";codecs=\"".$codecs[$type]."\"' src=\"".$long_src."\" autobuffer controls preload=\"auto\"/>";
 }
 $tag .= "</video></div>";
 

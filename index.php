@@ -146,12 +146,12 @@ if($folder_list) {
         $has_files = dirEmpty($item["dir"].$item["name"],$filetype,$commands);
         if($has_files == TRUE){
             $listfolders .= trim('<tr class="folder"><td class="name" title="'.
-                urlencode($item['name']).'"><img src="images/Folder_open_trans.gif" alt="'.
-                urlencode($item['name']).'" /><a href="?dir='.
+                $item['name'].'"><img src="images/Folder_open_trans.gif" alt="'.
+                $item['name'].'" /><a href="?dir='.
                 urlencode($item['dir']).
                 urlencode($item['name']).'/" title="'.
-                urlencode($item['name']).'">'.
-                urlencode($item['name']).'</a></td></tr>');
+                $item['name'].'">'.
+                $item['name'].'</a></td></tr>');
         }
     }
 }
@@ -198,21 +198,21 @@ if($file_list){
         if(!file_exists($webroot."/".$params['meta_dir'].$params['thumb_name'].".txt")){
             exec($out_duration_cmd);
         }
-        $out_duration = file_get_contents(escapeshellcmd($params['meta_dir'].$params['thumb_name']).".txt");
+        $out_duration = file_get_contents($params['meta_dir'].$params['thumb_name'].".txt");
         $out_duration = str_replace(",","<br />",$out_duration);
         $popup_link = "/player.php?name=".$params['file_path']."&amp;file=".$item['name'].".".
             $item['ext']."&amp;type=".$item['type']."&t=".rand();
 
         $listfiles .= trim('<tr class="file"><td class="thumb" title="'.
-            urlencode(substrwords($params['thumb_name'],20)).'">'.
+            substrwords($params['thumb_name'],20).'">'.
             '<a href="http://'.$storageserver.':'.$storageport.'/'.$params['file_path'].
             '" target="_blank">Direct Link</a><br/><span class="item_title">'.
             substrwords($params['thumb_name'],20).'</span><a title="'.
-            urlencode(substrwords($params['thumb_name'],20)).'" href="'.$popup_link.'" target="_blank"><img alt="'.
-            urlencode(substrwords($params['thumb_name'],20)).'" src="'.
+            substrwords($params['thumb_name'],20).'" href="'.$popup_link.'" target="_blank"><img alt="'.
+            substrwords($params['thumb_name'],20).'" src="'.
             $params['thumb_dir'].$params['thumb_name'].'_thumb.png" /></a></td><td class="name" id="'.
-            urlencode(substrwords($params['thumb_name'],20)).'" title="'.
-            urlencode(substrwords($params['thumb_name'],20)).'"><img src="'.$this_script.'?image='.
+            substrwords($params['thumb_name'],20).'" title="'.
+            substrwords($params['thumb_name'],20).'"><img src="'.$this_script.'?image='.
             $item['ext'].'" alt="'.$item['ext'].'" /><a href="'.$popup_link.'" target="_blank">'.
             $item['name'].'.'.$item['ext'].'</a><br />'.$out_duration.'</td><td class="start"><a href="#'.
             $item['name'].'" onclick="javascript:ajax_cmd(\'start\',\''.$params['file_path'].'\',\''.
