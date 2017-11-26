@@ -338,7 +338,7 @@ RewriteRule . /index.php [L]
 
 AddType video/x-m4v .m4v
 AddType video/mp4 .mp4 .mov
-AddType video/x-matroska .mkv
+AddType video/mkv .mkv
 AddType video/ogg .ogm .ogv .ogg
 AddType video/webm .webm
 AddType audio/webm .weba

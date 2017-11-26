@@ -16,13 +16,14 @@ $filetype = array(
 );
 
 //list of mime types.
-$typesArray = array('avi'=>'video/mp4','mpg'=>'video/flash','mp4'=>'video/mp4','m4v'=>'video/mp4','mkv'=>'video/mkv',
+$typesArray = array('avi'=>'video/mp4','mpg'=>'video/flash','mp4'=>'video/mp4','m4v'=>'video/x-m4v','mkv'=>'video/mkv',
     'ogm'=>'video/ogg','wmv'=>'video/mp4','flv'=>'video/mp4','webm'=>'video/webm');
 
 $codecs = array(
     'video/mkv' => 'theora, vorbis',
     'video/ogg' => 'theora, vorbis',
-    'video/mp4' => 'avc1.42E01E, mp4a.40.2'
+    'video/mp4' => 'avc1.42E01E, mp4a.40.2',
+    'video/x-m4v' => 'avc1.42E01E, mp4a.40.2',
 );
 
 /**********************************************************************************************************************************/
