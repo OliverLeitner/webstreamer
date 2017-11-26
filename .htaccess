@@ -337,7 +337,8 @@ RewriteRule . /index.php [L]
 #RewriteCond %{REQUEST_URI} !=/favicon.ico
 
 AddType video/x-m4v .m4v
-AddType video/mp4 .mp4 .mov .mkv
+AddType video/mp4 .mp4 .mov
+AddType video/x-matroska .mkv
 AddType video/ogg .ogm .ogv .ogg
 AddType video/webm .webm
 AddType audio/webm .weba
