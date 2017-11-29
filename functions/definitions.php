@@ -74,7 +74,25 @@ $commands['check_subtitle'] = "avconv -i ###file_path### 2>&1 |grep Subtitle";
 
 $commands['stop_avconv'] = "kill -9 $(ps auxf |grep ###uid### |gawk '{print $2}') 2>&1";
 
-$commands['find_file'] = "ls -m -B -f -R ###directory_name######subdirs###/*.###file_ending### |wc -l";
+$commands['find_file'] = "ls -B -f -R ###directory_name######subdirs###/*.###file_ending### |wc -l";
+//$files = preg_grep('~\.(jpeg|jpg|png)$~', scandir($dir_f));
+/*
+ * $path = realpath('/etc');
+ *
+ * $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
+ * foreach($objects as $name => $object){
+ *     echo "$name\n";
+ * }
+ */
+/*
+ *     $path = realpath('my-big/directory');
+ *         $objects = new RecursiveIteratorIterator(
+ *                 new RecursiveDirectoryIterator($path),
+ *                         RecursiveIteratorIterator::SELF_FIRST
+ *                             );
+ *                                 $count=iterator_count($objects);
+ *                                     echo number_format($count); //680,642 wooohaah!
+ */
 
 $commands['create_thumbnail'] = "avconv -ss 00:02:00 -t 1 -i ###file_path### ";
 $commands['create_thumbnail'] .= "-r 16 -qscale 1 -s 320x240 -f image2 ###thumb_dir######thumb_name###_thumb.png";

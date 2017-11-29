@@ -110,7 +110,7 @@ function dirEmpty($dirname,$allowed,$commands){
             {
                 $builder = $i;
                 $param = "";
-                while($builder > 1)
+                while($builder > 0)
                 {
                     $param .= "/*";
                     $builder--;
@@ -195,7 +195,7 @@ function buildCmd($params,$cmd_tpl)
     $command = $cmd_tpl;
     foreach($params AS $dkey => $data)
     {
-        $command = preg_replace('/###'.$dkey.'###/i',escapeshellcmd($data),$command);
+        $command = preg_replace('/###'.$dkey.'###/i',$data,$command);
     }
     return $command;
 }
