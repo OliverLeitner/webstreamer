@@ -195,6 +195,11 @@ function buildCmd($params,$cmd_tpl)
     $command = $cmd_tpl;
     foreach($params AS $dkey => $data)
     {
+        preg_match('/\*\//',$data,$matched);
+        if($matched)
+        {
+            $data = escapeshellcmd($data);
+        }
         $command = preg_replace('/###'.$dkey.'###/i',$data,$command);
     }
     return $command;
