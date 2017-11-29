@@ -110,7 +110,7 @@ function dirEmpty($dirname,$allowed,$commands){
             {
                 $builder = $i;
                 $param = "";
-                while($builder > 0)
+                while($builder > 1)
                 {
                     $param .= "/*";
                     $builder--;
